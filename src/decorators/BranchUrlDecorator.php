@@ -46,4 +46,4 @@ class BranchUrlDecorator extends Decorator
         }
         return str_replace('.php', '', $url);
     }
-    }
+}

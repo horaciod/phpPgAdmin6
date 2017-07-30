@@ -42,4 +42,4 @@ class RedirectUrlDecorator extends Decorator
         }
         return str_replace('.php', '', $url);
     }
-    }
+}

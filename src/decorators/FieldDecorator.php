@@ -16,5 +16,4 @@ class FieldDecorator extends Decorator
     {
         return isset($fields[$this->f]) ? Decorator::get_sanitized_value($fields[$this->f], $fields) : (isset($this->d) ? $this->d : null);
     }
-
-    }
+}

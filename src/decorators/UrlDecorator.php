@@ -6,7 +6,6 @@ class UrlDecorator extends Decorator
 {
     public function __construct($base, $queryVars = null)
     {
-
         $this->b = $base;
         if ($queryVars !== null) {
             $this->q = $queryVars;
@@ -35,4 +34,4 @@ class UrlDecorator extends Decorator
         }
         return $url;
     }
-    }
+}

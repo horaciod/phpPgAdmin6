@@ -18,4 +18,4 @@ class ArrayMergeDecorator extends Decorator
 
         return $accum;
     }
-    }
+}
