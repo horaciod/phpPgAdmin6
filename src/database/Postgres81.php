@@ -2,7 +2,7 @@
 
     namespace PHPPgAdmin\Database;
 
-    /**
+/**
      * PostgreSQL 8.1 support
      *
      * $Id: Postgres81.php,v 1.21 2008/01/19 13:46:15 ioguix Exp $
@@ -10,7 +10,6 @@
 
     class Postgres81 extends Postgres82
     {
-
         public $major_version = 8.1;
         // List of all legal privileges that can be applied to different types
         // of objects.
@@ -195,7 +194,8 @@
             $status = -1; // ini
             if ($rs->recordCount() and ($rs->fields['vacrelid'] == $toid)) {
                 // table exists in pg_autovacuum, UPDATE
-                $sql    = sprintf("UPDATE \"pg_catalog\".\"pg_autovacuum\" SET
+                $sql    = sprintf(
+                    "UPDATE \"pg_catalog\".\"pg_autovacuum\" SET
 						enabled = '%s',
 						vac_base_thresh = %s,
 						vac_scale_factor = %s,
@@ -216,7 +216,8 @@
                 $status = $this->execute($sql);
             } else {
                 // table doesn't exists in pg_autovacuum, INSERT
-                $sql    = sprintf("INSERT INTO \"pg_catalog\".\"pg_autovacuum\"
+                $sql    = sprintf(
+                    "INSERT INTO \"pg_catalog\".\"pg_autovacuum\"
 				VALUES (%s, '%s', %s, %s, %s, %s, %s, %s)",
                     $toid,
                     ($_POST['autovacuum_enabled'] == 'on') ? 't' : 'f',

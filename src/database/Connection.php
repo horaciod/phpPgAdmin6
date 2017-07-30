@@ -2,7 +2,7 @@
 
     namespace PHPPgAdmin\Database;
 
-    /**
+/**
      * Class to represent a database connection
      *
      * $Id: Connection.php,v 1.15 2008/02/18 21:42:47 ioguix Exp $
@@ -10,7 +10,6 @@
 
     class Connection
     {
-
         use \PHPPgAdmin\HelperTrait;
 
         public $conn;
@@ -78,7 +77,6 @@
          */
         public function getDriver(&$description)
         {
-
             $v = pg_version($this->conn->_connectionID);
 
             //\PhpConsole\Handler::getInstance()->debug($v, 'pg_version');

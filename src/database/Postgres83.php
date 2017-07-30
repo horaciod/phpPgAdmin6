@@ -2,7 +2,7 @@
 
     namespace PHPPgAdmin\Database;
 
-    /**
+/**
      * PostgreSQL 8.3 support
      *
      * $Id: Postgres82.php,v 1.10 2007/12/28 16:21:25 ioguix Exp $
@@ -10,7 +10,6 @@
 
     class Postgres83 extends Postgres84
     {
-
         public $major_version = 8.3;
 
         // List of all legal privileges that can be applied to different types
@@ -212,7 +211,8 @@
             $status = -1; // ini
             if ($rs->recordCount() and ($rs->fields['vacrelid'] == $toid)) {
                 // table exists in pg_autovacuum, UPDATE
-                $sql    = sprintf("UPDATE \"pg_catalog\".\"pg_autovacuum\" SET
+                $sql    = sprintf(
+                    "UPDATE \"pg_catalog\".\"pg_autovacuum\" SET
 						enabled = '%s',
 						vac_base_thresh = %s,
 						vac_scale_factor = %s,
@@ -237,7 +237,8 @@
                 $status = $this->execute($sql);
             } else {
                 // table doesn't exists in pg_autovacuum, INSERT
-                $sql    = sprintf("INSERT INTO \"pg_catalog\".\"pg_autovacuum\"
+                $sql    = sprintf(
+                    "INSERT INTO \"pg_catalog\".\"pg_autovacuum\"
 				VALUES (%s, '%s', %s, %s, %s, %s, %s, %s, %s, %s )",
                     $toid,
                     ($_POST['autovacuum_enabled'] == 'on') ? 't' : 'f',
@@ -298,7 +299,6 @@
             $cycledvalue,
             $startvalue
         ) {
-
             $sql = '';
             /* vars are cleaned in _alterSequence */
             if (!empty($increment) && ($increment != $seqrs->fields['increment_by'])) {

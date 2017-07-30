@@ -2,7 +2,7 @@
 
     namespace PHPPgAdmin\Database;
 
-    /**
+/**
      * A Class that implements the DB Interface for Postgres
      * Note: This Class uses ADODB and returns RecordSets.
      *
@@ -11,7 +11,6 @@
 
     class Postgres extends ADODB_base
     {
-
         use \PHPPgAdmin\HelperTrait;
 
         public $major_version = 9.6;
@@ -345,6 +344,7 @@
                     if (!is_null($value)) {
                         $value = $this->escapeBytea($value);
                     }
+                    // no break
                 case 'text':
                 case 'text[]':
                 case 'json':
@@ -554,7 +554,6 @@
          */
         public function getDefaultWithOid()
         {
-
             $sql = 'SHOW default_with_oids';
 
             return $this->selectField($sql, 'default_with_oids');
@@ -687,6 +686,7 @@
                 case 'TEXT SEARCH PARSER':
                 case 'TYPE':
                     $sql .= "\"{$f_schema}\".";
+                    // no break
                 case 'DATABASE':
                 case 'ROLE':
                 case 'SCHEMA':
@@ -739,7 +739,6 @@
          */
         public function alterDatabase($dbName, $newName, $newOwner = '', $comment = '')
         {
-
             $status = $this->beginTransaction();
             if ($status != 0) {
                 $this->rollbackTransaction();
@@ -2237,7 +2236,6 @@
             if ($triggers->recordCount() > 0) {
                 $sql .= "\n-- Triggers\n\n";
                 while (!$triggers->EOF) {
-
                     $sql .= $triggers->fields['tgdef'];
                     $sql .= ";\n";
 
@@ -2542,7 +2540,6 @@
          */
         public function createTableLike($name, $like, $defaults = false, $constraints = false, $idx = false, $tablespace = '')
         {
-
             $f_schema = $this->_schema;
             $this->fieldClean($f_schema);
             $this->fieldClean($name);
@@ -2609,7 +2606,6 @@
          */
         public function alterTable($table, $name, $owner, $schema, $comment, $tablespace)
         {
-
             $data = $this->getTable($table);
 
             if ($data->recordCount() != 1) {
@@ -2648,7 +2644,6 @@
          */
         protected function _alterTable($tblrs, $name, $owner, $schema, $comment, $tablespace)
         {
-
             $this->fieldArrayClean($tblrs->fields);
 
             // Comment
@@ -3237,7 +3232,6 @@
          */
         public function getTableAutovacuum($table = '')
         {
-
             $sql = '';
 
             if ($table !== '') {
@@ -3359,7 +3353,6 @@
          */
         public function insertRow($table, $fields, $values, $nulls, $format, $types)
         {
-
             if (!is_array($fields) || !is_array($values) || !is_array($nulls)
                 || !is_array($format) || !is_array($types)
                 || (count($fields) != count($values))
@@ -3367,7 +3360,7 @@
                 return -1;
             }
 
-// Build clause
+            // Build clause
             if (count($values) > 0) {
                 // Escape all field names
                 $fields   = array_map(['\PHPPgAdmin\Database\Postgres', 'fieldClean'], $fields);
@@ -3480,7 +3473,6 @@
 
             // Build clause
             if (sizeof($vars) > 0) {
-
                 foreach ($vars as $key => $value) {
                     $this->fieldClean($key);
 
@@ -3552,7 +3544,7 @@
                 return -1;
             }
 
-// Begin transaction.  We do this so that we can ensure only one row is
+            // Begin transaction.  We do this so that we can ensure only one row is
             // deleted
             $status = $this->beginTransaction();
             if ($status != 0) {
@@ -3655,7 +3647,6 @@
          */
         public function restartSequence($sequence)
         {
-
             $f_schema = $this->_schema;
             $this->fieldClean($f_schema);
             $this->fieldClean($sequence);
@@ -3807,7 +3798,6 @@
             $cycledvalue = null,
             $startvalue = null
         ) {
-
             $this->fieldClean($sequence);
 
             $data = $this->getSequence($sequence);
@@ -3823,8 +3813,20 @@
                 return -1;
             }
 
-            $status = $this->_alterSequence($data, $name, $comment, $owner, $schema, $increment,
-                $minvalue, $maxvalue, $restartvalue, $cachevalue, $cycledvalue, $startvalue);
+            $status = $this->_alterSequence(
+                $data,
+                $name,
+                $comment,
+                $owner,
+                $schema,
+                $increment,
+                $minvalue,
+                $maxvalue,
+                $restartvalue,
+                $cachevalue,
+                $cycledvalue,
+                $startvalue
+            );
 
             if ($status != 0) {
                 $this->rollbackTransaction();
@@ -3867,7 +3869,6 @@
             $cycledvalue,
             $startvalue
         ) {
-
             $this->fieldArrayClean($seqrs->fields);
 
             // Comment
@@ -3891,8 +3892,16 @@
             $this->clean($cachevalue);
             $this->clean($cycledvalue);
             $this->clean($startvalue);
-            $status = $this->alterSequenceProps($seqrs, $increment, $minvalue,
-                $maxvalue, $restartvalue, $cachevalue, $cycledvalue, $startvalue);
+            $status = $this->alterSequenceProps(
+                $seqrs,
+                $increment,
+                $minvalue,
+                $maxvalue,
+                $restartvalue,
+                $cachevalue,
+                $cycledvalue,
+                $startvalue
+            );
             if ($status != 0) {
                 return -6;
             }
@@ -3964,7 +3973,6 @@
             $cycledvalue,
             $startvalue
         ) {
-
             $sql = '';
             /* vars are cleaned in _alterSequence */
             if (!empty($increment) && ($increment != $seqrs->fields['increment_by'])) {
@@ -4190,7 +4198,6 @@
          */
         public function alterView($view, $name, $owner, $schema, $comment)
         {
-
             $data = $this->getView($view);
             if ($data->recordCount() != 1) {
                 return -2;
@@ -4250,7 +4257,6 @@
          */
         protected function _alterView($vwrs, $name, $owner, $schema, $comment)
         {
-
             $this->fieldArrayClean($vwrs->fields);
 
             // Comment
@@ -4389,7 +4395,6 @@
          */
         public function alreadyClustered($table)
         {
-
             $c_schema = $this->_schema;
             $this->clean($c_schema);
             $this->clean($table);
@@ -4528,7 +4533,6 @@
          */
         public function clusterIndex($table = '', $index = '')
         {
-
             $sql = 'CLUSTER';
 
             // We don't bother with a transaction here, as there's no point rolling
@@ -4559,7 +4563,6 @@
          */
         public function getConstraintsWithFields($table)
         {
-
             $c_schema = $this->_schema;
             $this->clean($c_schema);
             $this->clean($table);
@@ -6167,7 +6170,6 @@
          */
         public function getTriggerDef($trigger)
         {
-
             $this->fieldArrayClean($trigger);
             // Constants to figure out tgtype
             if (!defined('TRIGGER_TYPE_ROW')) {
@@ -6679,7 +6681,6 @@
          */
         public function getFtsConfigurationMap($ftscfg)
         {
-
             $c_schema = $this->_schema;
             $this->clean($c_schema);
             $this->fieldClean($ftscfg);
@@ -6771,7 +6772,6 @@
          */
         public function getFtsDictionaryTemplates()
         {
-
             $sql = "
  			SELECT
 				n.nspname as schema,
@@ -6847,7 +6847,6 @@
          */
         public function updateFtsConfiguration($cfgname, $comment, $name)
         {
-
             $status = $this->beginTransaction();
             if ($status != 0) {
                 $this->rollbackTransaction();
@@ -6903,7 +6902,6 @@
             $option = '',
             $comment = ''
         ) {
-
             $f_schema = $this->_schema;
             $this->fieldClean($f_schema);
             $this->fieldClean($dictname);
@@ -6984,7 +6982,6 @@
          */
         public function updateFtsDictionary($dictname, $comment, $name)
         {
-
             $status = $this->beginTransaction();
             if ($status != 0) {
                 $this->rollbackTransaction();
@@ -7027,7 +7024,6 @@
          */
         public function getFtsDictionaryByName($ftsdict)
         {
-
             $c_schema = $this->_schema;
             $this->clean($c_schema);
             $this->clean($ftsdict);
@@ -7063,7 +7059,6 @@
          */
         public function changeFtsMapping($ftscfg, $mapping, $action, $dictname = null)
         {
-
             if (count($mapping) > 0) {
                 $f_schema = $this->_schema;
                 $this->fieldClean($f_schema);
@@ -7144,7 +7139,6 @@
          */
         public function getFtsMappings($ftscfg)
         {
-
             $cfg = $this->getFtsConfigurationByName($ftscfg);
 
             $sql = "SELECT alias AS name, description
@@ -7679,7 +7673,6 @@
             $adminmembersold,
             $newrolename
         ) {
-
             $status = $this->beginTransaction();
             if ($status != 0) {
                 return -1;
@@ -7696,8 +7689,23 @@
             }
 
             $status =
-                $this->setRole($rolename, $password, $superuser, $createdb, $createrole, $inherits, $login, $connlimit, $expiry, $memberof, $members,
-                    $adminmembers, $memberofold, $membersold, $adminmembersold);
+                $this->setRole(
+                    $rolename,
+                    $password,
+                    $superuser,
+                    $createdb,
+                    $createrole,
+                    $inherits,
+                    $login,
+                    $connlimit,
+                    $expiry,
+                    $memberof,
+                    $members,
+                    $adminmembers,
+                    $memberofold,
+                    $membersold,
+                    $adminmembersold
+                );
             if ($status != 0) {
                 $this->rollbackTransaction();
 
@@ -8299,6 +8307,7 @@
                 case 'column':
                     $sql    .= " (\"{$object}\")";
                     $object = $table;
+                    // no break
                 case 'table':
                 case 'view':
                 case 'sequence':
@@ -8551,7 +8560,6 @@
          */
         public function vacuumDB($table = '', $analyze = false, $full = false, $freeze = false)
         {
-
             $sql = 'VACUUM';
             if ($full) {
                 $sql .= ' FULL';
@@ -8582,8 +8590,8 @@
          */
         public function getAutovacuum()
         {
-
-            $_defaults = $this->selectSet("SELECT name, setting
+            $_defaults = $this->selectSet(
+                "SELECT name, setting
 			FROM pg_catalog.pg_settings
 			WHERE
 				name = 'autovacuum'
@@ -8678,7 +8686,8 @@
             $this->fieldClean($f_schema);
             $this->fieldClean($table);
 
-            return $this->execute("
+            return $this->execute(
+                "
 			ALTER TABLE \"{$f_schema}\".\"{$table}\" RESET (autovacuum_enabled, autovacuum_vacuum_threshold,
 				autovacuum_vacuum_scale_factor, autovacuum_analyze_threshold, autovacuum_analyze_scale_factor,
 				autovacuum_vacuum_cost_delay, autovacuum_vacuum_cost_limit
@@ -9617,5 +9626,4 @@
         {
             return true;
         }
-
     }

@@ -2,14 +2,13 @@
 
     namespace PHPPgAdmin\Database;
 
-    /**
+/**
      * PostgreSQL 9.5 support
      *
      */
 
     class Postgres96 extends Postgres
     {
-
         public $major_version = 9.6;
 
         // Administration functions
