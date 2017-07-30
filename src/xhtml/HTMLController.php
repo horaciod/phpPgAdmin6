@@ -117,7 +117,6 @@ class HTMLController
      */
     public function printLink($link, $do_print = true)
     {
-
         if (!isset($link['fields'])) {
             $link['fields'] = $_REQUEST;
         }

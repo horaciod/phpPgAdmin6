@@ -55,7 +55,6 @@ class HTMLTableController extends HTMLController
      */
     public function printTable(&$tabledata, &$columns, &$actions, $place, $nodata = null, $pre_fn = null)
     {
-
         $misc           = $this->misc;
         $lang           = $this->lang;
         $plugin_manager = $this->plugin_manager;
@@ -96,7 +95,6 @@ class HTMLTableController extends HTMLController
                         $tablehtml .= "<input type=\"hidden\" name=\"$k\" value=\"$v\" />";
                     }
                 }
-
             }
 
             $tablehtml .= '<table width="auto" class="' . $place . '">' . "\n";
@@ -149,12 +147,10 @@ class HTMLTableController extends HTMLController
                 $tablehtml .= "</table>\n";
                 $tablehtml .= '</form>';
             };
-
         } else {
             if (!is_null($nodata)) {
                 $tablehtml .= "<p>{$nodata}</p>\n";
             }
-
         }
         return $tablehtml;
     }
@@ -231,7 +227,6 @@ class HTMLTableController extends HTMLController
                             if (isset($column['url'])) {
                                 $tbody_html .= "</a>";
                             }
-
                         }
 
                         $tbody_html .= "</td>\n";
@@ -343,5 +338,4 @@ class HTMLTableController extends HTMLController
             return $url_vars_html;
         }
     }
-
 }

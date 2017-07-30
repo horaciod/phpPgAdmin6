@@ -99,7 +99,6 @@ class HTMLNavbarController extends HTMLController
             } else {
                 return $this->printLinksList($navlinks, 'navlink', false);
             }
-
         }
     }
 
@@ -111,7 +110,6 @@ class HTMLNavbarController extends HTMLController
      */
     public function printTabs($tabs, $activetab, $do_print = true)
     {
-
         $lang = $this->lang;
         $misc = $this->misc;
         $data = $misc->getDatabaseAccessor();
@@ -122,19 +120,16 @@ class HTMLNavbarController extends HTMLController
         }
         $tabs_html = '';
         if (count($tabs) > 0) {
-
             $tabs_html .= '<table class="tabs" data-controller="' . $this->controller_name . '"><tr>' . "\n";
 
             # FIXME: don't count hidden tabs
             $width = (int) (100 / count($tabs)) . '%';
             foreach ($tabs as $tab_id => $tab) {
-
                 $tabs[$tab_id]['active'] = $active = ($tab_id == $activetab) ? ' active' : '';
 
                 $tabs[$tab_id]['width'] = $width;
 
                 if (!isset($tab['hide']) || $tab['hide'] !== true) {
-
                     $tabs[$tab_id]['tablink'] = htmlentities($this->getActionUrl($tab, $_REQUEST));
 
                     $tablink = '<a href="' . $tabs[$tab_id]['tablink'] . '">';
@@ -165,7 +160,6 @@ class HTMLNavbarController extends HTMLController
         } else {
             return $tabs_html;
         }
-
     }
 
     /**
@@ -194,7 +188,6 @@ class HTMLNavbarController extends HTMLController
      */
     private function printTopbar($do_print = true)
     {
-
         $lang           = $this->lang;
         $plugin_manager = $this->plugin_manager;
         $misc           = $this->misc;
@@ -210,11 +203,13 @@ class HTMLNavbarController extends HTMLController
 
         if ($server_info && isset($server_info['platform']) && isset($server_info['username'])) {
             /* top left informations when connected */
-            $topbar_html .= sprintf($lang['strtopbar'],
+            $topbar_html .= sprintf(
+                $lang['strtopbar'],
                 '<span class="platform">' . htmlspecialchars($server_info['platform']) . '</span>',
                 '<span class="host">' . htmlspecialchars((empty($server_info['host'])) ? 'localhost' : $server_info['host']) . '</span>',
                 '<span class="port">' . htmlspecialchars($server_info['port']) . '</span>',
-                '<span class="username">' . htmlspecialchars($server_info['username']) . '</span>');
+                '<span class="username">' . htmlspecialchars($server_info['username']) . '</span>'
+            );
 
             $topbar_html .= "</td>";
 
@@ -453,7 +448,6 @@ class HTMLNavbarController extends HTMLController
                 'help'  => 'pg.matview',
                 'icon'  => 'MViews',
             ];
-
         } elseif (isset($_REQUEST['ftscfg']) && !$done) {
             $trail['ftscfg'] = [
                 'title' => $lang['strftsconfig'],
@@ -554,5 +548,4 @@ class HTMLNavbarController extends HTMLController
             return $list_html;
         }
     }
-
 }

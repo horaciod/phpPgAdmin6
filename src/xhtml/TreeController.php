@@ -111,7 +111,6 @@ class TreeController extends HTMLController
 
         if (count($treedata) > 0) {
             foreach ($treedata as $rec) {
-
                 echo "<tree";
                 echo Decorator::value_xml_attr('text', $attrs['text'], $rec);
                 echo Decorator::value_xml_attr('action', $attrs['action'], $rec);
@@ -140,7 +139,6 @@ class TreeController extends HTMLController
 
     public function adjustTabsForTree(&$tabs)
     {
-
         foreach ($tabs as $i => $tab) {
             if ((isset($tab['hide']) && $tab['hide'] === true) || (isset($tab['tree']) && $tab['tree'] === false)) {
                 unset($tabs[$i]);
@@ -169,7 +167,6 @@ class TreeController extends HTMLController
             if (file_exists(BASE_PATH . $path . '.gif')) {
                 return SUBFOLDER . $path . '.gif';
             }
-
         } else {
             // Icon from plugins
             $path = "/plugins/{$icon[0]}/images/{$icon[1]}";
@@ -180,7 +177,6 @@ class TreeController extends HTMLController
             if (file_exists(BASE_PATH . $path . '.gif')) {
                 return SUBFOLDER . $path . '.gif';
             }
-
         }
         return '';
     }

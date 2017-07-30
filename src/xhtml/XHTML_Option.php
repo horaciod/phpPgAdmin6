@@ -2,14 +2,12 @@
 
     namespace PHPPgAdmin\XHtml;
 
-    class XHTML_Option extends XHtmlElement
+class XHTML_Option extends XHtmlElement
+{
+    public function __construct($text, $value = null)
     {
+        parent::__construct(null);
 
-        public function __construct($text, $value = null)
-        {
-
-            parent::__construct(null);
-
-            $this->set_text($text);
-        }
+        $this->set_text($text);
     }
+}

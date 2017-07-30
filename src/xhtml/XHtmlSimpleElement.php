@@ -28,9 +28,7 @@ class XHtmlSimpleElement
      */
     public function __construct($element = null)
     {
-
         $this->_element = $this->is_element();
-
     }
 
     public function set_style($style)
@@ -60,7 +58,6 @@ class XHtmlSimpleElement
             if (!empty($value)) {
                 $this->_htmlcode .= " {$attribute}=\"{$value}\"";
             }
-
         }
         $this->_htmlcode .= "/>";
 
@@ -89,5 +86,4 @@ class XHtmlSimpleElement
     {
         $this->_attributes[$attr] = $value;
     }
-
 }
