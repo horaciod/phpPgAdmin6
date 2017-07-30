@@ -68,12 +68,10 @@ class AggregateController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -88,7 +86,8 @@ class AggregateController extends BaseController
             'text'    => $proto,
             'icon'    => 'Aggregate',
             'toolTip' => Decorator::field('aggcomment'),
-            'action'  => Decorator::redirecturl('redirect.php',
+            'action'  => Decorator::redirecturl(
+                'redirect.php',
                 $reqvars,
                 [
                     'action'   => 'properties',
@@ -114,19 +113,27 @@ class AggregateController extends BaseController
         if (trim($_REQUEST['name']) == '') {
             $this->doCreate($lang['straggrneedsname']);
             return;
-        } else if (trim($_REQUEST['basetype']) == '') {
+        } elseif (trim($_REQUEST['basetype']) == '') {
             $this->doCreate($lang['straggrneedsbasetype']);
             return;
-        } else if (trim($_REQUEST['sfunc']) == '') {
+        } elseif (trim($_REQUEST['sfunc']) == '') {
             $this->doCreate($lang['straggrneedssfunc']);
             return;
-        } else if (trim($_REQUEST['stype']) == '') {
+        } elseif (trim($_REQUEST['stype']) == '') {
             $this->doCreate($lang['straggrneedsstype']);
             return;
         }
 
-        $status = $data->createAggregate($_REQUEST['name'], $_REQUEST['basetype'], $_REQUEST['sfunc'], $_REQUEST['stype'],
-            $_REQUEST['ffunc'], $_REQUEST['initcond'], $_REQUEST['sortop'], $_REQUEST['aggrcomment']);
+        $status = $data->createAggregate(
+            $_REQUEST['name'],
+            $_REQUEST['basetype'],
+            $_REQUEST['sfunc'],
+            $_REQUEST['stype'],
+            $_REQUEST['ffunc'],
+            $_REQUEST['initcond'],
+            $_REQUEST['sortop'],
+            $_REQUEST['aggrcomment']
+        );
 
         if ($status == 0) {
             $this->misc->setReloadBrowser(true);
@@ -136,9 +143,9 @@ class AggregateController extends BaseController
         }
     }
 
-/**
- * Displays a screen for create a new aggregate function
- */
+    /**
+     * Displays a screen for create a new aggregate function
+     */
     public function doCreate($msg = '')
     {
         $conf = $this->conf;
@@ -217,9 +224,9 @@ class AggregateController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Function to save after altering an aggregate
- */
+    /**
+     * Function to save after altering an aggregate
+     */
     public function doSaveAlter()
     {
         $conf = $this->conf;
@@ -233,9 +240,17 @@ class AggregateController extends BaseController
             return;
         }
 
-        $status = $data->alterAggregate($_REQUEST['aggrname'], $_REQUEST['aggrtype'], $_REQUEST['aggrowner'],
-            $_REQUEST['aggrschema'], $_REQUEST['aggrcomment'], $_REQUEST['newaggrname'], $_REQUEST['newaggrowner'],
-            $_REQUEST['newaggrschema'], $_REQUEST['newaggrcomment']);
+        $status = $data->alterAggregate(
+            $_REQUEST['aggrname'],
+            $_REQUEST['aggrtype'],
+            $_REQUEST['aggrowner'],
+            $_REQUEST['aggrschema'],
+            $_REQUEST['aggrcomment'],
+            $_REQUEST['newaggrname'],
+            $_REQUEST['newaggrowner'],
+            $_REQUEST['newaggrschema'],
+            $_REQUEST['newaggrcomment']
+        );
         if ($status == 0) {
             $this->doDefault($lang['straggraltered']);
         } else {
@@ -244,9 +259,9 @@ class AggregateController extends BaseController
         }
     }
 
-/**
- * Function to allow editing an aggregate function
- */
+    /**
+     * Function to allow editing an aggregate function
+     */
     public function doAlter($msg = '')
     {
         $conf = $this->conf;
@@ -291,9 +306,9 @@ class AggregateController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Show confirmation of drop and perform actual drop of the aggregate function selected
- */
+    /**
+     * Show confirmation of drop and perform actual drop of the aggregate function selected
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -324,13 +339,12 @@ class AggregateController extends BaseController
             } else {
                 $this->doDefault($lang['straggregatedroppedbad']);
             }
-
         }
     }
 
-/**
- * Show the properties of an aggregate
- */
+    /**
+     * Show the properties of an aggregate
+     */
     public function doProperties($msg = '')
     {
         $conf = $this->conf;
@@ -427,9 +441,9 @@ class AggregateController extends BaseController
         $this->printNavLinks($navlinks, 'aggregates-properties', get_defined_vars());
     }
 
-/**
- * Show default list of aggregate functions in the database
- */
+    /**
+     * Show default list of aggregate functions in the database
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -523,5 +537,4 @@ class AggregateController extends BaseController
         ];
         $this->printNavLinks($navlinks, 'aggregates-aggregates', get_defined_vars());
     }
-
 }

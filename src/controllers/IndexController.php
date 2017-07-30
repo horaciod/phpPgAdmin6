@@ -73,7 +73,6 @@ class IndexController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     public function doDefault($msg = '')
@@ -203,7 +202,6 @@ class IndexController extends BaseController
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -278,16 +276,13 @@ class IndexController extends BaseController
                     } else {
                         $this->doDefault($lang['stranalyzebad']);
                     }
-
                 } else {
                     $this->doDefault($lang['strclusteredgood']);
                 }
             } else {
                 $this->doDefault($lang['strclusteredbad']);
             }
-
         }
-
     }
 
     public function doReindex()
@@ -302,12 +297,11 @@ class IndexController extends BaseController
         } else {
             $this->doDefault($lang['strreindexbad']);
         }
-
     }
 
-/**
- * Displays a screen where they can enter a new index
- */
+    /**
+     * Displays a screen where they can enter a new index
+     */
     public function doCreateIndex($msg = '')
     {
         $conf = $this->conf;
@@ -440,10 +434,10 @@ class IndexController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Actually creates the new index in the database
- * @@ Note: this function can't handle columns with commas in them
- */
+    /**
+     * Actually creates the new index in the database
+     * @@ Note: this function can't handle columns with commas in them
+     */
     public function doSaveCreateIndex()
     {
         $conf = $this->conf;
@@ -467,21 +461,27 @@ class IndexController extends BaseController
         } elseif (!isset($_POST['IndexColumnList']) || $_POST['IndexColumnList'] == '') {
             $this->doCreateIndex($lang['strindexneedscols']);
         } else {
-            $status = $data->createIndex($_POST['formIndexName'], $_POST['table'], $_POST['IndexColumnList'],
-                $_POST['formIndexType'], isset($_POST['formUnique']), $_POST['formWhere'], $_POST['formSpc'],
-                isset($_POST['formConcur']));
+            $status = $data->createIndex(
+                $_POST['formIndexName'],
+                $_POST['table'],
+                $_POST['IndexColumnList'],
+                $_POST['formIndexType'],
+                isset($_POST['formUnique']),
+                $_POST['formWhere'],
+                $_POST['formSpc'],
+                isset($_POST['formConcur'])
+            );
             if ($status == 0) {
                 $this->doDefault($lang['strindexcreated']);
             } else {
                 $this->doCreateIndex($lang['strindexcreatedbad']);
             }
-
         }
     }
 
-/**
- * Show confirmation of drop index and perform actual drop
- */
+    /**
+     * Show confirmation of drop index and perform actual drop
+     */
     public function doDropIndex($confirm)
     {
         $conf = $this->conf;
@@ -517,9 +517,6 @@ class IndexController extends BaseController
             } else {
                 $this->doDefault($lang['strindexdroppedbad']);
             }
-
         }
-
     }
-
 }

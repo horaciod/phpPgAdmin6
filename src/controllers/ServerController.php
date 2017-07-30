@@ -29,7 +29,6 @@ class ServerController extends BaseController
 
     public function doLogout()
     {
-
         $plugin_manager = $this->plugin_manager;
         $lang           = $this->lang;
         $misc           = $this->misc;
@@ -46,12 +45,10 @@ class ServerController extends BaseController
         $misc->setReloadBrowser(true);
 
         echo sprintf($lang['strlogoutmsg'], $server_info['desc']);
-
     }
 
     public function doDefault($msg = '')
     {
-
         $lang = $this->lang;
         $conf = $this->conf;
         $misc = $this->misc;
@@ -126,12 +123,10 @@ class ServerController extends BaseController
             $actions['logout']['attr']['href']['urlvars']['group'] = $group;
         }
         echo $this->printTable($servers, $columns, $actions, $this->table_place, $lang['strnoobjects'], $svPre);
-
     }
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
 
@@ -142,7 +137,7 @@ class ServerController extends BaseController
         if (isset($conf['srv_groups']) and count($conf['srv_groups']) > 0
             and $group_id === false) {
             $nodes = $misc->getServersGroups(true);
-        } else if (isset($conf['srv_groups']) and $group_id !== false) {
+        } elseif (isset($conf['srv_groups']) and $group_id !== false) {
             /* group subtree */
             if ($group_id !== 'all') {
                 $nodes = $misc->getServersGroups(false, $group_id);
@@ -173,7 +168,6 @@ class ServerController extends BaseController
         ];
 
         return $this->printTree($nodes, $attrs, $this->section);
-
     }
 
     public function render()
@@ -206,7 +200,5 @@ class ServerController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
-
 }

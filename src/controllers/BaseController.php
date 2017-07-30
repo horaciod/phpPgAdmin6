@@ -7,7 +7,6 @@ namespace PHPPgAdmin\Controller;
  */
 class BaseController
 {
-
     use \PHPPgAdmin\HelperTrait;
 
     private $container        = null;
@@ -63,7 +62,6 @@ class BaseController
             $_server_info = $this->misc->getServerInfo();
             // Redirect to the login form if not logged in
             if (!isset($_server_info['username'])) {
-
                 $login_controller = new \PHPPgAdmin\Controller\LoginController($container);
                 echo $login_controller->doLoginForm($msg);
 
@@ -194,5 +192,4 @@ class BaseController
         $html_trail = $this->getNavbarController();
         return $html_trail->printLink($link, $do_print);
     }
-
 }

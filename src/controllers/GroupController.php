@@ -13,7 +13,6 @@ class GroupController extends BaseController
 
     public function render()
     {
-
         $this->printHeader($lang['strgroups']);
         $this->printBody();
 
@@ -71,9 +70,9 @@ class GroupController extends BaseController
         $misc->printFooter();
     }
 
-/**
- * Add user to a group
- */
+    /**
+     * Add user to a group
+     */
     public function doAddMember()
     {
         $conf = $this->conf;
@@ -87,12 +86,11 @@ class GroupController extends BaseController
         } else {
             $this->doProperties($lang['strmemberaddedbad']);
         }
-
     }
 
-/**
- * Show confirmation of drop user from group and perform actual drop
- */
+    /**
+     * Show confirmation of drop user from group and perform actual drop
+     */
     public function doDropMember($confirm)
     {
         $conf = $this->conf;
@@ -121,13 +119,12 @@ class GroupController extends BaseController
             } else {
                 $this->doDropMember(true, $lang['strmemberdroppedbad']);
             }
-
         }
     }
 
-/**
- * Show read only properties for a group
- */
+    /**
+     * Show read only properties for a group
+     */
     public function doProperties($msg = '')
     {
         $conf = $this->conf;
@@ -205,9 +202,9 @@ class GroupController extends BaseController
         ]], 'groups-properties', get_defined_vars());
     }
 
-/**
- * Show confirmation of drop and perform actual drop
- */
+    /**
+     * Show confirmation of drop and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -235,13 +232,12 @@ class GroupController extends BaseController
             } else {
                 $this->doDefault($lang['strgroupdroppedbad']);
             }
-
         }
     }
 
-/**
- * Displays a screen where they can enter a new group
- */
+    /**
+     * Displays a screen where they can enter a new group
+     */
     public function doCreate($msg = '')
     {
         $conf = $this->conf;
@@ -289,9 +285,9 @@ class GroupController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Actually creates the new group in the database
- */
+    /**
+     * Actually creates the new group in the database
+     */
     public function doSaveCreate()
     {
         $conf = $this->conf;
@@ -313,13 +309,12 @@ class GroupController extends BaseController
             } else {
                 $this->doCreate($lang['strgroupcreatedbad']);
             }
-
         }
     }
 
-/**
- * Show default list of groups in the database
- */
+    /**
+     * Show default list of groups in the database
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -374,7 +369,5 @@ class GroupController extends BaseController
             ],
             'content' => $lang['strcreategroup'],
         ]], 'groups-groups', get_defined_vars());
-
     }
-
 }

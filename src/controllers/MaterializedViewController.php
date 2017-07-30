@@ -15,7 +15,6 @@ class MaterializedViewController extends BaseController
 
     public function render()
     {
-
         $conf   = $this->conf;
         $misc   = $this->misc;
         $lang   = $this->lang;
@@ -84,7 +83,6 @@ class MaterializedViewController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
     /**
@@ -156,8 +154,11 @@ class MaterializedViewController extends BaseController
                         '>', htmlspecialchars($v), "</option>\n";
                     }
                     echo "</select></td>\n";
-                    echo '<td style="white-space:nowrap;">', $data->printField("values[{$attrs->fields['attname']}]",
-                        $_REQUEST['values'][$attrs->fields['attname']], $attrs->fields['type']), '</td>';
+                    echo '<td style="white-space:nowrap;">', $data->printField(
+                        "values[{$attrs->fields['attname']}]",
+                        $_REQUEST['values'][$attrs->fields['attname']],
+                        $attrs->fields['type']
+                    ), '</td>';
                     echo "</tr>\n";
                     $i++;
                     $attrs->moveNext();
@@ -214,7 +215,6 @@ class MaterializedViewController extends BaseController
                 return $display_controller->render();
             }
         }
-
     }
 
     /**
@@ -280,7 +280,6 @@ class MaterializedViewController extends BaseController
                 } else {
                     $this->doDefault($lang['strviewdroppedbad']);
                 }
-
             } else {
                 $status = $data->dropView($_POST['view'], isset($_POST['cascade']));
                 if ($status == 0) {
@@ -289,10 +288,8 @@ class MaterializedViewController extends BaseController
                 } else {
                     $this->doDefault($lang['strviewdroppedbad']);
                 }
-
             }
         }
-
     }
 
     /**
@@ -346,7 +343,8 @@ class MaterializedViewController extends BaseController
 
                 $attrs = $data->getTableAttributes($arrSelTables[$i]['tablename']);
                 while (!$attrs->EOF) {
-                    $arrFields["{$arrSelTables[$i]['schemaname']}.{$arrSelTables[$i]['tablename']}.{$attrs->fields['attname']}"] = serialize([
+                    $arrFields["{$arrSelTables[$i]['schemaname']}.{$arrSelTables[$i]['tablename']}.{$attrs->fields['attname']}"] = serialize(
+                        [
                         'schemaname' => $arrSelTables[$i]['schemaname'],
                         'tablename'  => $arrSelTables[$i]['tablename'],
                         'fieldname'  => $attrs->fields['attname']]
@@ -418,7 +416,6 @@ class MaterializedViewController extends BaseController
                 if ($v == 'i') {
                     $arrOperators[$k] = $k;
                 }
-
             }
 
             // Output additional conditions, note that this portion of the wizard treats the right hand side as literal values
@@ -508,7 +505,6 @@ class MaterializedViewController extends BaseController
             } else {
                 $_REQUEST['formDefinition'] = 'SELECT ';
             }
-
         }
         if (!isset($_REQUEST['formComment'])) {
             $_REQUEST['formComment'] = '';
@@ -560,7 +556,6 @@ class MaterializedViewController extends BaseController
             } else {
                 $this->doCreate($lang['strviewcreatedbad']);
             }
-
         }
     }
 
@@ -578,7 +573,7 @@ class MaterializedViewController extends BaseController
 
         if (!strlen($_POST['formView'])) {
             $this->doSetParamsCreate($lang['strviewneedsname']);
-        } else if (!isset($_POST['formFields']) || !count($_POST['formFields'])) {
+        } elseif (!isset($_POST['formFields']) || !count($_POST['formFields'])) {
             $this->doSetParamsCreate($lang['strviewneedsfields']);
         } else {
             $selFields = '';
@@ -596,7 +591,7 @@ class MaterializedViewController extends BaseController
                         // field does not exist
                         $selFields .= "\"{$arrTmp['schemaname']}\".\"{$arrTmp['tablename']}\".\"{$arrTmp['fieldname']}\", ";
                         $tmpHsh[$arrTmp['fieldname']] = 1;
-                    } else if ($_POST['dblFldMeth'] == 'rename') {
+                    } elseif ($_POST['dblFldMeth'] == 'rename') {
                         // field exist and must be renamed
                         $tmpHsh[$arrTmp['fieldname']]++;
                         $selFields .= "\"{$arrTmp['schemaname']}\".\"{$arrTmp['tablename']}\".\"{$arrTmp['fieldname']}\" AS \"{$arrTmp['schemaname']}_{$arrTmp['tablename']}_{$arrTmp['fieldname']}{$tmpHsh[$arrTmp['fieldname']]}\", ";
@@ -631,7 +626,6 @@ class MaterializedViewController extends BaseController
                     $j = 0;
                     while ($j < $count) {
                         foreach ($arrLinks as $curLink) {
-
                             $arrLeftLink  = unserialize($curLink['leftlink']);
                             $arrRightLink = unserialize($curLink['rightlink']);
                             $data->fieldArrayClean($arrLeftLink);
@@ -657,7 +651,6 @@ class MaterializedViewController extends BaseController
                                 if (!in_array($tbl2, $arrUsedTbls)) {
                                     $arrUsedTbls[] = $tbl2;
                                 }
-
                             }
                         }
                         $j++;
@@ -701,7 +694,6 @@ class MaterializedViewController extends BaseController
             } else {
                 $this->doSetParamsCreate($lang['strviewcreatedbad']);
             }
-
         }
     }
 
@@ -841,7 +833,5 @@ class MaterializedViewController extends BaseController
             ],
         ];
         $this->printNavLinks($navlinks, $this->table_place, get_defined_vars());
-
     }
-
 }

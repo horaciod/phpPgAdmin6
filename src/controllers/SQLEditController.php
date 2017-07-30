@@ -42,7 +42,6 @@ class SQLEditController extends BaseController
         echo $body_text;
 
         $misc->printFooter(true, 'sqledit_footer.twig');
-
     }
 
     /**
@@ -50,7 +49,6 @@ class SQLEditController extends BaseController
      */
     public function _printConnection($action)
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -77,7 +75,6 @@ class SQLEditController extends BaseController
      */
     public function doFind()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -135,7 +132,6 @@ class SQLEditController extends BaseController
      */
     public function doDefault()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -200,7 +196,5 @@ class SQLEditController extends BaseController
         // Default focus
         //$this->setFocus('forms[0].query');
         return $default_html;
-
     }
-
 }

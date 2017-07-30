@@ -15,7 +15,6 @@ class ViewController extends BaseController
 
     public function render()
     {
-
         $conf   = $this->conf;
         $misc   = $this->misc;
         $lang   = $this->lang;
@@ -23,7 +22,7 @@ class ViewController extends BaseController
 
         if ($action == 'tree') {
             return $this->doTree();
-        } else if ($action == 'subtree') {
+        } elseif ($action == 'subtree') {
             return $this->doSubTree();
         }
 
@@ -91,15 +90,13 @@ class ViewController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
-/**
- * Generate XML for the browser tree.
- */
+    /**
+     * Generate XML for the browser tree.
+     */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -115,7 +112,9 @@ class ViewController extends BaseController
             'iconAction' => Decorator::url('display.php', $reqvars, ['view' => Decorator::field('relname')]),
             'toolTip'    => Decorator::field('relcomment'),
             'action'     => Decorator::redirecturl('redirect.php', $reqvars, ['view' => Decorator::field('relname')]),
-            'branch'     => Decorator::url('views.php', $reqvars,
+            'branch'     => Decorator::url(
+                'views.php',
+                $reqvars,
                 [
                     'action' => 'subtree',
                     'view'   => Decorator::field('relname'),
@@ -128,7 +127,6 @@ class ViewController extends BaseController
 
     public function doSubTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -143,7 +141,12 @@ class ViewController extends BaseController
             'icon'   => Decorator::field('icon'),
             'action' => Decorator::actionurl(Decorator::field('url'), $reqvars, Decorator::field('urlvars'), ['view' => $_REQUEST['view']]),
             'branch' => Decorator::ifempty(
-                Decorator::field('branch'), '', Decorator::url(Decorator::field('url'), Decorator::field('urlvars'), $reqvars,
+                Decorator::field('branch'),
+                '',
+                Decorator::url(
+                    Decorator::field('url'),
+                    Decorator::field('urlvars'),
+                    $reqvars,
                     [
                         'action' => 'tree',
                         'view'   => $_REQUEST['view'],
@@ -224,8 +227,11 @@ class ViewController extends BaseController
                         '>', htmlspecialchars($v), "</option>\n";
                     }
                     echo "</select></td>\n";
-                    echo '<td style="white-space:nowrap;">', $data->printField("values[{$attrs->fields['attname']}]",
-                        $_REQUEST['values'][$attrs->fields['attname']], $attrs->fields['type']), '</td>';
+                    echo '<td style="white-space:nowrap;">', $data->printField(
+                        "values[{$attrs->fields['attname']}]",
+                        $_REQUEST['values'][$attrs->fields['attname']],
+                        $attrs->fields['type']
+                    ), '</td>';
                     echo "</tr>\n";
                     $i++;
                     $attrs->moveNext();
@@ -282,7 +288,6 @@ class ViewController extends BaseController
                 return $display_controller->render();
             }
         }
-
     }
 
     /**
@@ -348,7 +353,6 @@ class ViewController extends BaseController
                 } else {
                     $this->doDefault($lang['strviewdroppedbad']);
                 }
-
             } else {
                 $status = $data->dropView($_POST['view'], isset($_POST['cascade']));
                 if ($status == 0) {
@@ -357,10 +361,8 @@ class ViewController extends BaseController
                 } else {
                     $this->doDefault($lang['strviewdroppedbad']);
                 }
-
             }
         }
-
     }
 
     /**
@@ -414,7 +416,8 @@ class ViewController extends BaseController
 
                 $attrs = $data->getTableAttributes($arrSelTables[$i]['tablename']);
                 while (!$attrs->EOF) {
-                    $arrFields["{$arrSelTables[$i]['schemaname']}.{$arrSelTables[$i]['tablename']}.{$attrs->fields['attname']}"] = serialize([
+                    $arrFields["{$arrSelTables[$i]['schemaname']}.{$arrSelTables[$i]['tablename']}.{$attrs->fields['attname']}"] = serialize(
+                        [
                         'schemaname' => $arrSelTables[$i]['schemaname'],
                         'tablename'  => $arrSelTables[$i]['tablename'],
                         'fieldname'  => $attrs->fields['attname']]
@@ -486,7 +489,6 @@ class ViewController extends BaseController
                 if ($v == 'i') {
                     $arrOperators[$k] = $k;
                 }
-
             }
 
             // Output additional conditions, note that this portion of the wizard treats the right hand side as literal values
@@ -576,7 +578,6 @@ class ViewController extends BaseController
             } else {
                 $_REQUEST['formDefinition'] = 'SELECT ';
             }
-
         }
         if (!isset($_REQUEST['formComment'])) {
             $_REQUEST['formComment'] = '';
@@ -628,7 +629,6 @@ class ViewController extends BaseController
             } else {
                 $this->doCreate($lang['strviewcreatedbad']);
             }
-
         }
     }
 
@@ -646,7 +646,7 @@ class ViewController extends BaseController
 
         if (!strlen($_POST['formView'])) {
             $this->doSetParamsCreate($lang['strviewneedsname']);
-        } else if (!isset($_POST['formFields']) || !count($_POST['formFields'])) {
+        } elseif (!isset($_POST['formFields']) || !count($_POST['formFields'])) {
             $this->doSetParamsCreate($lang['strviewneedsfields']);
         } else {
             $selFields = '';
@@ -664,7 +664,7 @@ class ViewController extends BaseController
                         // field does not exist
                         $selFields .= "\"{$arrTmp['schemaname']}\".\"{$arrTmp['tablename']}\".\"{$arrTmp['fieldname']}\", ";
                         $tmpHsh[$arrTmp['fieldname']] = 1;
-                    } else if ($_POST['dblFldMeth'] == 'rename') {
+                    } elseif ($_POST['dblFldMeth'] == 'rename') {
                         // field exist and must be renamed
                         $tmpHsh[$arrTmp['fieldname']]++;
                         $selFields .= "\"{$arrTmp['schemaname']}\".\"{$arrTmp['tablename']}\".\"{$arrTmp['fieldname']}\" AS \"{$arrTmp['schemaname']}_{$arrTmp['tablename']}_{$arrTmp['fieldname']}{$tmpHsh[$arrTmp['fieldname']]}\", ";
@@ -699,7 +699,6 @@ class ViewController extends BaseController
                     $j = 0;
                     while ($j < $count) {
                         foreach ($arrLinks as $curLink) {
-
                             $arrLeftLink  = unserialize($curLink['leftlink']);
                             $arrRightLink = unserialize($curLink['rightlink']);
                             $data->fieldArrayClean($arrLeftLink);
@@ -725,7 +724,6 @@ class ViewController extends BaseController
                                 if (!in_array($tbl2, $arrUsedTbls)) {
                                     $arrUsedTbls[] = $tbl2;
                                 }
-
                             }
                         }
                         $j++;
@@ -769,7 +767,6 @@ class ViewController extends BaseController
             } else {
                 $this->doSetParamsCreate($lang['strviewcreatedbad']);
             }
-
         }
     }
 
@@ -908,7 +905,5 @@ class ViewController extends BaseController
             ],
         ];
         $this->printNavLinks($navlinks, $this->table_place, get_defined_vars());
-
     }
-
 }

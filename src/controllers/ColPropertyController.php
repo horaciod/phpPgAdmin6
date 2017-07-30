@@ -201,11 +201,20 @@ class ColPropertyController extends BaseController
                     $_REQUEST['length'] = '';
                 }
 
-                list($status, $sql) = $data->alterColumn($_REQUEST['table'], $_REQUEST['column'], $_REQUEST['field'],
-                    isset($_REQUEST['notnull']), isset($_REQUEST['oldnotnull']),
-                    $_REQUEST['default'], $_REQUEST['olddefault'],
-                    $_REQUEST['type'], $_REQUEST['length'], $_REQUEST['array'], $_REQUEST['oldtype'],
-                    $_REQUEST['comment']);
+                list($status, $sql) = $data->alterColumn(
+                    $_REQUEST['table'],
+                    $_REQUEST['column'],
+                    $_REQUEST['field'],
+                    isset($_REQUEST['notnull']),
+                    isset($_REQUEST['oldnotnull']),
+                    $_REQUEST['default'],
+                    $_REQUEST['olddefault'],
+                    $_REQUEST['type'],
+                    $_REQUEST['length'],
+                    $_REQUEST['array'],
+                    $_REQUEST['oldtype'],
+                    $_REQUEST['comment']
+                );
 
                 $this->prtrace('status', $status, 'sql', $sql);
                 if ($status == 0) {
@@ -236,7 +245,6 @@ class ColPropertyController extends BaseController
         $data = $misc->getDatabaseAccessor();
 
         $attPre = function (&$rowdata) use ($data) {
-
             $rowdata->fields['+type'] = $data->formatType($rowdata->fields['type'], $rowdata->fields['atttypmod']);
         };
 
@@ -382,5 +390,4 @@ class ColPropertyController extends BaseController
             $this->printNavLinks($navlinks, $this->table_place, get_defined_vars());
         }
     }
-
 }

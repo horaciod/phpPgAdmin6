@@ -20,7 +20,7 @@ class FulltextController extends BaseController
         $action = $this->action;
         if ($action == 'tree') {
             return $this->doTree();
-        } else if ($action == 'subtree') {
+        } elseif ($action == 'subtree') {
             return $this->doSubTree($_REQUEST['what']);
         }
 
@@ -124,7 +124,6 @@ class FulltextController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     /**
@@ -132,7 +131,6 @@ class FulltextController extends BaseController
      */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -146,11 +144,13 @@ class FulltextController extends BaseController
         $attrs = [
             'text'   => Decorator::field('title'),
             'icon'   => Decorator::field('icon'),
-            'action' => Decorator::actionurl('fulltext.php',
+            'action' => Decorator::actionurl(
+                'fulltext.php',
                 $reqvars,
                 field('urlvars')
             ),
-            'branch' => Decorator::url('fulltext.php',
+            'branch' => Decorator::url(
+                'fulltext.php',
                 $reqvars,
                 [
                     'action' => 'subtree',
@@ -164,7 +164,6 @@ class FulltextController extends BaseController
 
     public function doSubTree($what)
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -193,13 +192,16 @@ class FulltextController extends BaseController
             'text'    => Decorator::field('name'),
             'icon'    => $what,
             'toolTip' => Decorator::field('comment'),
-            'action'  => Decorator::actionurl('fulltext.php',
+            'action'  => Decorator::actionurl(
+                'fulltext.php',
                 $reqvars,
                 $urlvars
             ),
-            'branch'  => Decorator::ifempty(Decorator::field('branch'),
+            'branch'  => Decorator::ifempty(
+                Decorator::field('branch'),
                 '',
-                url('fulltext.php',
+                url(
+                    'fulltext.php',
                     $reqvars,
                     [
                         'action' => 'subtree',
@@ -210,7 +212,6 @@ class FulltextController extends BaseController
         ];
 
         return $this->printTree($items, $attrs, strtolower($what));
-
     }
 
     public function doDefault($msg = '')
@@ -326,9 +327,7 @@ class FulltextController extends BaseController
             } else {
                 $this->doDefault($lang['strftsconfigdroppedbad']);
             }
-
         }
-
     }
 
     public function doDropDict($confirm)
@@ -363,14 +362,12 @@ class FulltextController extends BaseController
             } else {
                 $this->doViewDicts($lang['strftsdictdroppedbad']);
             }
-
         }
-
     }
 
-/**
- * Displays a screen where one can enter a new FTS configuration
- */
+    /**
+     * Displays a screen where one can enter a new FTS configuration
+     */
     public function doCreateConfig($msg = '')
     {
         $conf = $this->conf;
@@ -478,9 +475,9 @@ class FulltextController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Actually creates the new FTS configuration in the database
- */
+    /**
+     * Actually creates the new FTS configuration in the database
+     */
     public function doSaveCreateConfig()
     {
         $conf = $this->conf;
@@ -521,12 +518,11 @@ class FulltextController extends BaseController
         } else {
             $this->doCreateConfig($lang['strftsconfigcreatedbad']);
         }
-
     }
 
-/**
- * Display a form to permit editing FTS configuration properies.
- */
+    /**
+     * Display a form to permit editing FTS configuration properies.
+     */
     public function doAlterConfig($msg = '')
     {
         $conf = $this->conf;
@@ -587,9 +583,9 @@ class FulltextController extends BaseController
         }
     }
 
-/**
- * Save the form submission containing changes to a FTS configuration
- */
+    /**
+     * Save the form submission containing changes to a FTS configuration
+     */
     public function doSaveAlterConfig()
     {
         $conf   = $this->conf;
@@ -602,12 +598,11 @@ class FulltextController extends BaseController
         } else {
             $this->doAlterConfig($lang['strftsconfigalteredbad']);
         }
-
     }
 
-/**
- * View list of FTS parsers
- */
+    /**
+     * View list of FTS parsers
+     */
     public function doViewParsers($msg = '')
     {
         $conf = $this->conf;
@@ -644,9 +639,9 @@ class FulltextController extends BaseController
         //TODO: navlink to "create parser"
     }
 
-/**
- * View list of FTS dictionaries
- */
+    /**
+     * View list of FTS dictionaries
+     */
     public function doViewDicts($msg = '')
     {
         $conf = $this->conf;
@@ -728,9 +723,9 @@ class FulltextController extends BaseController
         $this->printNavLinks($navlinks, 'fulltext-viewdicts', get_defined_vars());
     }
 
-/**
- * View details of FTS configuration given
- */
+    /**
+     * View details of FTS configuration given
+     */
     public function doViewConfig($ftscfg, $msg = '')
     {
         $conf = $this->conf;
@@ -825,9 +820,9 @@ class FulltextController extends BaseController
         $this->printNavLinks($navlinks, 'fulltext-viewconfig', get_defined_vars());
     }
 
-/**
- * Displays a screen where one can enter a details of a new FTS dictionary
- */
+    /**
+     * Displays a screen where one can enter a details of a new FTS dictionary
+     */
     public function doCreateDict($msg = '')
     {
         $conf = $this->conf;
@@ -951,9 +946,9 @@ class FulltextController extends BaseController
 			</script>\n";
     }
 
-/**
- * Actually creates the new FTS dictionary in the database
- */
+    /**
+     * Actually creates the new FTS dictionary in the database
+     */
     public function doSaveCreateDict()
     {
         $conf = $this->conf;
@@ -965,7 +960,6 @@ class FulltextController extends BaseController
         if ($_POST['formName'] == '') {
             $this->doCreateDict($lang['strftsdictneedsname']);
         } else {
-
             if (!isset($_POST['formIsTemplate'])) {
                 $_POST['formIsTemplate'] = false;
             }
@@ -988,9 +982,14 @@ class FulltextController extends BaseController
                 $_POST['formOption'] = '';
             }
 
-            $status = $data->createFtsDictionary($_POST['formName'], $_POST['formIsTemplate'],
-                $formTemplate, $_POST['formLexize'],
-                $_POST['formInit'], $_POST['formOption'], $_POST['formComment']
+            $status = $data->createFtsDictionary(
+                $_POST['formName'],
+                $_POST['formIsTemplate'],
+                $formTemplate,
+                $_POST['formLexize'],
+                $_POST['formInit'],
+                $_POST['formOption'],
+                $_POST['formComment']
             );
 
             if ($status == 0) {
@@ -999,13 +998,12 @@ class FulltextController extends BaseController
             } else {
                 $this->doCreateDict($lang['strftsdictcreatedbad']);
             }
-
         }
     }
 
-/**
- * Display a form to permit editing FTS dictionary properies.
- */
+    /**
+     * Display a form to permit editing FTS dictionary properies.
+     */
     public function doAlterDict($msg = '')
     {
         $conf = $this->conf;
@@ -1060,9 +1058,9 @@ class FulltextController extends BaseController
         }
     }
 
-/**
- * Save the form submission containing changes to a FTS dictionary
- */
+    /**
+     * Save the form submission containing changes to a FTS dictionary
+     */
     public function doSaveAlterDict()
     {
         $conf = $this->conf;
@@ -1076,12 +1074,11 @@ class FulltextController extends BaseController
         } else {
             $this->doAlterDict($lang['strftsdictalteredbad']);
         }
-
     }
 
-/**
- * Show confirmation of drop and perform actual drop of FTS mapping
- */
+    /**
+     * Show confirmation of drop and perform actual drop of FTS mapping
+     */
     public function doDropMapping($confirm)
     {
         $conf = $this->conf;
@@ -1107,13 +1104,11 @@ class FulltextController extends BaseController
 
             // Case of multiaction drop
             if (isset($_REQUEST['ma'])) {
-
                 foreach ($_REQUEST['ma'] as $v) {
                     $a = unserialize(htmlspecialchars_decode($v, ENT_QUOTES));
                     echo '<p>', sprintf($lang['strconfdropftsmapping'], $misc->printVal($a['mapping']), $misc->printVal($_REQUEST['ftscfg'])), "</p>\n";
                     printf('<input type="hidden" name="mapping[]" value="%s" />', htmlspecialchars($a['mapping']));
                 }
-
             } else {
                 echo '<p>', sprintf($lang['strconfdropftsmapping'], $misc->printVal($_REQUEST['mapping']), $misc->printVal($_REQUEST['ftscfg'])), "</p>\n";
                 echo '<input type="hidden" name="mapping" value="', htmlspecialchars($_REQUEST['mapping']), "\" />\n";
@@ -1226,9 +1221,9 @@ class FulltextController extends BaseController
         }
     }
 
-/**
- * Save the form submission containing changes to a FTS mapping
- */
+    /**
+     * Save the form submission containing changes to a FTS mapping
+     */
     public function doSaveAlterMapping()
     {
         $conf = $this->conf;
@@ -1243,12 +1238,11 @@ class FulltextController extends BaseController
         } else {
             $this->doAlterMapping($lang['strftsmappingalteredbad']);
         }
-
     }
 
-/**
- * Show the form to enter parameters of a new FTS mapping
- */
+    /**
+     * Show the form to enter parameters of a new FTS mapping
+     */
     public function doAddMapping($msg = '')
     {
         $conf = $this->conf;
@@ -1320,9 +1314,9 @@ class FulltextController extends BaseController
         }
     }
 
-/**
- * Save the form submission containing parameters of a new FTS mapping
- */
+    /**
+     * Save the form submission containing parameters of a new FTS mapping
+     */
     public function doSaveAddMapping()
     {
         $conf = $this->conf;
@@ -1337,7 +1331,5 @@ class FulltextController extends BaseController
         } else {
             $this->doAddMapping($lang['strftsmappingaddedbad']);
         }
-
     }
-
 }

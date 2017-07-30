@@ -2,7 +2,7 @@
 
     namespace PHPPgAdmin\Controller;
 
-    /**
+/**
      * Base controller class
      */
 class BrowserController extends BaseController
@@ -46,4 +46,4 @@ class BrowserController extends BaseController
 
         echo $this->view->fetch('browser.twig', $viewVars);
     }
-    }
+}

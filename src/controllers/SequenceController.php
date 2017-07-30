@@ -90,7 +90,6 @@ class SequenceController extends BaseController
 
         // Print footer
         return $misc->printFooter();
-
     }
 
     /**
@@ -98,7 +97,6 @@ class SequenceController extends BaseController
      */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -112,7 +110,8 @@ class SequenceController extends BaseController
             'text'    => Decorator::field('seqname'),
             'icon'    => 'Sequence',
             'toolTip' => Decorator::field('seqcomment'),
-            'action'  => Decorator::actionurl('sequences.php',
+            'action'  => Decorator::actionurl(
+                'sequences.php',
                 $reqvars,
                 [
                     'action'   => 'properties',
@@ -224,9 +223,9 @@ class SequenceController extends BaseController
         ]], 'sequences-sequences', get_defined_vars());
     }
 
-/**
- * Display the properties of a sequence
- */
+    /**
+     * Display the properties of a sequence
+     */
     public function doProperties($msg = '')
     {
         $conf = $this->conf;
@@ -377,12 +376,11 @@ class SequenceController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
-/**
- * Drop a sequence
- */
+    /**
+     * Drop a sequence
+     */
     public function doDrop($confirm, $msg = '')
     {
         $conf = $this->conf;
@@ -443,7 +441,6 @@ class SequenceController extends BaseController
                 } else {
                     $this->doDefault($lang['strsequencedroppedbad']);
                 }
-
             } else {
                 $status = $data->dropSequence($_POST['sequence'], isset($_POST['cascade']));
                 if ($status == 0) {
@@ -452,14 +449,13 @@ class SequenceController extends BaseController
                 } else {
                     $this->doDrop(true, $lang['strsequencedroppedbad']);
                 }
-
             }
         }
     }
 
-/**
- * Displays a screen where they can enter a new sequence
- */
+    /**
+     * Displays a screen where they can enter a new sequence
+     */
     public function doCreateSequence($msg = '')
     {
         $conf = $this->conf;
@@ -534,9 +530,9 @@ class SequenceController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Actually creates the new sequence in the database
- */
+    /**
+     * Actually creates the new sequence in the database
+     */
     public function doSaveCreateSequence()
     {
         $conf = $this->conf;
@@ -548,10 +544,15 @@ class SequenceController extends BaseController
         if ($_POST['formSequenceName'] == '') {
             $this->doCreateSequence($lang['strsequenceneedsname']);
         } else {
-            $status = $data->createSequence($_POST['formSequenceName'],
-                $_POST['formIncrement'], $_POST['formMinValue'],
-                $_POST['formMaxValue'], $_POST['formStartValue'],
-                $_POST['formCacheValue'], isset($_POST['formCycledValue']));
+            $status = $data->createSequence(
+                $_POST['formSequenceName'],
+                $_POST['formIncrement'],
+                $_POST['formMinValue'],
+                $_POST['formMaxValue'],
+                $_POST['formStartValue'],
+                $_POST['formCacheValue'],
+                isset($_POST['formCycledValue'])
+            );
             if ($status == 0) {
                 $this->doDefault($lang['strsequencecreated']);
             } else {
@@ -560,9 +561,9 @@ class SequenceController extends BaseController
         }
     }
 
-/**
- * Restarts a sequence
- */
+    /**
+     * Restarts a sequence
+     */
     public function doRestart()
     {
         $conf = $this->conf;
@@ -576,12 +577,11 @@ class SequenceController extends BaseController
         } else {
             $this->doProperties($lang['strsequencerestartbad']);
         }
-
     }
 
-/**
- * Resets a sequence
- */
+    /**
+     * Resets a sequence
+     */
     public function doReset()
     {
         $conf = $this->conf;
@@ -595,12 +595,11 @@ class SequenceController extends BaseController
         } else {
             $this->doProperties($lang['strsequenceresetbad']);
         }
-
     }
 
-/**
- * Set Nextval of a sequence
- */
+    /**
+     * Set Nextval of a sequence
+     */
     public function doNextval()
     {
         $conf = $this->conf;
@@ -614,12 +613,11 @@ class SequenceController extends BaseController
         } else {
             $this->doProperties($lang['strsequencenextvalbad']);
         }
-
     }
 
-/**
- * Function to save after 'setval'ing a sequence
- */
+    /**
+     * Function to save after 'setval'ing a sequence
+     */
     public function doSaveSetval()
     {
         $conf = $this->conf;
@@ -633,12 +631,11 @@ class SequenceController extends BaseController
         } else {
             $this->doProperties($lang['strsequencesetvalbad']);
         }
-
     }
 
-/**
- * Function to allow 'setval'ing of a sequence
- */
+    /**
+     * Function to allow 'setval'ing of a sequence
+     */
     public function doSetval($msg = '')
     {
         $conf = $this->conf;
@@ -670,12 +667,11 @@ class SequenceController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
-/**
- * Function to save after altering a sequence
- */
+    /**
+     * Function to save after altering a sequence
+     */
     public function doSaveAlter()
     {
         $conf = $this->conf;
@@ -719,9 +715,20 @@ class SequenceController extends BaseController
             $_POST['formCycledValue'] = null;
         }
 
-        $status = $data->alterSequence($_POST['sequence'], $_POST['name'], $_POST['comment'], $_POST['owner'],
-            $_POST['newschema'], $_POST['formIncrement'], $_POST['formMinValue'], $_POST['formMaxValue'],
-            $_POST['formRestartValue'], $_POST['formCacheValue'], isset($_POST['formCycledValue']), $_POST['formStartValue']);
+        $status = $data->alterSequence(
+            $_POST['sequence'],
+            $_POST['name'],
+            $_POST['comment'],
+            $_POST['owner'],
+            $_POST['newschema'],
+            $_POST['formIncrement'],
+            $_POST['formMinValue'],
+            $_POST['formMaxValue'],
+            $_POST['formRestartValue'],
+            $_POST['formCacheValue'],
+            isset($_POST['formCycledValue']),
+            $_POST['formStartValue']
+        );
 
         if ($status == 0) {
             if ($_POST['sequence'] != $_POST['name']) {
@@ -739,12 +746,11 @@ class SequenceController extends BaseController
         } else {
             $this->doProperties($lang['strsequencealteredbad']);
         }
-
     }
 
-/**
- * Function to allow altering of a sequence
- */
+    /**
+     * Function to allow altering of a sequence
+     */
     public function doAlter($msg = '')
     {
         $conf = $this->conf;
@@ -863,7 +869,5 @@ class SequenceController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
-
 }

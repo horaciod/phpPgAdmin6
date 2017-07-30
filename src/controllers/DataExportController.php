@@ -23,12 +23,10 @@ class DataExportController extends BaseController
         parent::__construct($container);
 
         set_time_limit(0);
-
     }
 
     public function render()
     {
-
         $conf   = $this->conf;
         $misc   = $this->misc;
         $lang   = $this->lang;
@@ -40,7 +38,6 @@ class DataExportController extends BaseController
 
         // If format is set, then perform the export
         if (isset($_REQUEST['what'])) {
-
             $this->prtrace("REQUEST['what']", $_REQUEST['what']);
 
             // Include application functions
@@ -54,7 +51,6 @@ class DataExportController extends BaseController
                         $this->prtrace('DUMP ENABLED, d_format is', $_REQUEST['d_format']);
                         $dbexport_controller = new \PHPPgAdmin\Controller\DBExportController($this->getContainer());
                         return $dbexport_controller->render();
-
                     } else {
                         $this->prtrace('d_format is', $_REQUEST['d_format'], 'd_oids is', isset($_REQUEST['d_oids']));
                         $format = $_REQUEST['d_format'];
@@ -161,7 +157,6 @@ class DataExportController extends BaseController
                             } else {
                                 echo "\t", (is_null($v)) ? '\\N' : $v;
                             }
-
                         }
                         echo "\n";
                         $rs->moveNext();
@@ -275,7 +270,6 @@ class DataExportController extends BaseController
                             } else {
                                 $values .= ', ' . ((is_null($v) ? 'NULL' : "'{$v}'"));
                             }
-
                         }
                         echo ") VALUES ({$values});\n";
                         $rs->moveNext();
@@ -306,7 +300,6 @@ class DataExportController extends BaseController
                             } else {
                                 echo "{$sep}\"{$v}\"";
                             }
-
                         }
                         echo "\r\n";
                     }
@@ -323,7 +316,6 @@ class DataExportController extends BaseController
                             } else {
                                 echo is_null($v) ? "{$sep}\"\\N\"" : "{$sep}\"{$v}\"";
                             }
-
                         }
                         echo "\r\n";
                         $rs->moveNext();
@@ -398,6 +390,5 @@ class DataExportController extends BaseController
         echo "</form>\n";
 
         $misc->printFooter();
-
     }
 }

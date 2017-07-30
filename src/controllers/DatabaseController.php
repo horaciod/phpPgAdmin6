@@ -108,12 +108,11 @@ class DatabaseController extends BaseController
         echo $output;
 
         $misc->printFooter(true, $footer_template);
-
     }
 
-/**
- * Sends a signal to a process
- */
+    /**
+     * Sends a signal to a process
+     */
     public function doSignal()
     {
         $conf = $this->conf;
@@ -127,12 +126,11 @@ class DatabaseController extends BaseController
         } else {
             $this->doProcesses($lang['strsignalsentbad']);
         }
-
     }
 
-/**
- * Searches for a named database object
- */
+    /**
+     * Searches for a named database object
+     */
     public function doFind($confirm = true, $msg = '')
     {
         $conf = $this->conf;
@@ -404,13 +402,12 @@ class DatabaseController extends BaseController
             } else {
                 echo "<p>{$lang['strnoobjects']}</p>\n";
             }
-
         }
     }
 
-/**
- * Displays options for database download
- */
+    /**
+     * Displays options for database download
+     */
     public function doExport($msg = '')
     {
         $conf = $this->conf;
@@ -464,9 +461,9 @@ class DatabaseController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Show the current status of all database variables
- */
+    /**
+     * Show the current status of all database variables
+     */
     public function doVariables()
     {
         $conf = $this->conf;
@@ -495,10 +492,10 @@ class DatabaseController extends BaseController
         echo $this->printTable($variables, $columns, $actions, $this->table_place, $lang['strnodata']);
     }
 
-/**
- * Show all current database connections and any queries they
- * are running.
- */
+    /**
+     * Show all current database connections and any queries they
+     * are running.
+     */
     public function doProcesses($msg = '')
     {
         $conf = $this->conf;
@@ -632,7 +629,6 @@ class DatabaseController extends BaseController
             if (!$data->hasQueryCancel()) {
                 unset($actions['cancel']);
             }
-
         }
 
         if (count($actions) == 0) {
@@ -644,7 +640,6 @@ class DatabaseController extends BaseController
         if ($isAjax) {
             exit;
         }
-
     }
 
     public function currentLocks($isAjax = false)
@@ -699,12 +694,11 @@ class DatabaseController extends BaseController
         if ($isAjax) {
             exit;
         }
-
     }
 
-/**
- * Show the existing table locks in the current database
- */
+    /**
+     * Show the existing table locks in the current database
+     */
     public function doLocks()
     {
         $conf = $this->conf;
@@ -722,9 +716,9 @@ class DatabaseController extends BaseController
         echo '</div>';
     }
 
-/**
- * Allow execution of arbitrary SQL statements on a database
- */
+    /**
+     * Allow execution of arbitrary SQL statements on a database
+     */
     public function doSQL()
     {
         $conf = $this->conf;
@@ -767,7 +761,6 @@ class DatabaseController extends BaseController
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -788,7 +781,5 @@ class DatabaseController extends BaseController
         ];
 
         return $this->printTree($items, $attrs, 'database');
-
     }
-
 }

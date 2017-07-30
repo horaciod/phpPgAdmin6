@@ -31,7 +31,6 @@ class LangController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
     /**
@@ -76,7 +75,6 @@ class LangController extends BaseController
      */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -90,7 +88,5 @@ class LangController extends BaseController
         ];
 
         return $this->printTree($languages, $attrs, 'languages');
-
     }
-
 }

@@ -2,83 +2,82 @@
 
     namespace PHPPgAdmin\Controller;
 
-    use PHPPgAdmin\Decorators\Decorator;
+use PHPPgAdmin\Decorators\Decorator;
 
     /**
      * Base controller class
      */
     class OpClassesController extends BaseController
     {
-    public $_name = 'OpClassesController';
+        public $_name = 'OpClassesController';
 
         public function render()
         {
-        $conf = $this->conf;
-        $misc = $this->misc;
-        $lang = $this->lang;
+            $conf = $this->conf;
+            $misc = $this->misc;
+            $lang = $this->lang;
 
-        $action = $this->action;
-        if ($action == 'tree') {
-            return $this->doTree();
-        }
+            $action = $this->action;
+            if ($action == 'tree') {
+                return $this->doTree();
+            }
 
-        $this->printHeader($lang['stropclasses']);
-        $this->printBody();
+            $this->printHeader($lang['stropclasses']);
+            $this->printBody();
 
-        switch ($action) {
+            switch ($action) {
             default:
                 $this->doDefault();
                 break;
         }
 
-        $misc->printFooter();
-    }
+            $misc->printFooter();
+        }
 
         /**
          * Generate XML for the browser tree.
          */
         public function doTree()
         {
+            $conf = $this->conf;
+            $misc = $this->misc;
+            $lang = $this->lang;
+            $data = $misc->getDatabaseAccessor();
 
-        $conf = $this->conf;
-        $misc = $this->misc;
-        $lang = $this->lang;
-        $data = $misc->getDatabaseAccessor();
+            $opclasses = $data->getOpClasses();
 
-        $opclasses = $data->getOpClasses();
+            // OpClass prototype: "op_class/access_method"
+            $proto = Decorator::concat(Decorator::field('opcname'), '/', Decorator::field('amname'));
 
-        // OpClass prototype: "op_class/access_method"
-        $proto = Decorator::concat(Decorator::field('opcname'), '/', Decorator::field('amname'));
-
-        $attrs = [
+            $attrs = [
             'text'    => $proto,
             'icon'    => 'OperatorClass',
             'toolTip' => Decorator::field('opccomment'),
         ];
 
-        return $this->printTree($opclasses, $attrs, 'opclasses');
-    }
+            return $this->printTree($opclasses, $attrs, 'opclasses');
+        }
 
-    /**
-     * Show default list of opclasss in the database
-         *
-         * @param string $msg
-         * @return string|void
-     */
+        /**
+         * Show default list of opclasss in the database
+             *
+             * @param string $msg
+             * @return string|void
+         */
         public function doDefault($msg = '')
         {
-        $conf = $this->conf;
-        $misc = $this->misc;
-        $lang = $this->lang;
-        $data = $misc->getDatabaseAccessor();
+            $conf = $this->conf;
+            $misc = $this->misc;
+            $lang = $this->lang;
+            $data = $misc->getDatabaseAccessor();
 
-        $this->printTrail('schema');
-        $this->printTabs('schema', 'opclasses');
-        $misc->printMsg($msg);
+            $this->printTrail('schema');
+            $this->printTabs('schema', 'opclasses');
+            $misc->printMsg($msg);
 
-        $opclasses = $data->getOpClasses();
+            $opclasses = $data->getOpClasses();
 
-        $columns = [
+            $columns = [
             'accessmethod' => [
                 'title' => $lang['straccessmethod'],
                 'field' => Decorator::field('amname'),
@@ -102,9 +101,8 @@
             ],
         ];
 
-        $actions = [];
+            $actions = [];
 
-        echo $this->printTable($opclasses, $columns, $actions, 'opclasses-opclasses', $lang['strnoopclasses']);
-    }
-
+            echo $this->printTable($opclasses, $columns, $actions, 'opclasses-opclasses', $lang['strnoopclasses']);
+        }
     }

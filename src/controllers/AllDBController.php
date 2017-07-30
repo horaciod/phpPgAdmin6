@@ -70,12 +70,10 @@ class AllDBController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -165,7 +163,6 @@ class AllDBController extends BaseController
             } else {
                 $this->doDefault($lang['strdatabasealteredbad']);
             }
-
         }
     }
 
@@ -185,20 +182,17 @@ class AllDBController extends BaseController
         }
 
         if ($confirm) {
-
             $this->printTrail('database');
             $this->printTitle($lang['strdrop'], 'pg.database.drop');
 
             echo '<form action="' . SUBFOLDER . "/src/views/all_db.php\" method=\"post\">\n";
             //If multi drop
             if (isset($_REQUEST['ma'])) {
-
                 foreach ($_REQUEST['ma'] as $v) {
                     $a = unserialize(htmlspecialchars_decode($v, ENT_QUOTES));
                     echo '<p>', sprintf($lang['strconfdropdatabase'], $misc->printVal($a['database'])), "</p>\n";
                     printf('<input type="hidden" name="dropdatabase[]" value="%s" />', htmlspecialchars($a['database']));
                 }
-
             } else {
                 echo '<p>', sprintf($lang['strconfdropdatabase'], $misc->printVal($_REQUEST['dropdatabase'])), "</p>\n";
                 echo '<input type="hidden" name="dropdatabase" value="', htmlspecialchars($_REQUEST['dropdatabase']), "\" />\n";
@@ -233,7 +227,6 @@ class AllDBController extends BaseController
                 } else {
                     $this->doDefault($lang['strdatabasedroppedbad']);
                 }
-
             }
         } //END DROP
     }
@@ -409,15 +402,21 @@ class AllDBController extends BaseController
         if ($_POST['formName'] == '') {
             $this->doCreate($lang['strdatabaseneedsname']);
         } else {
-            $status = $data->createDatabase($_POST['formName'], $_POST['formEncoding'], $_POST['formSpc'],
-                $_POST['formComment'], $_POST['formTemplate'], $_POST['formCollate'], $_POST['formCType']);
+            $status = $data->createDatabase(
+                $_POST['formName'],
+                $_POST['formEncoding'],
+                $_POST['formSpc'],
+                $_POST['formComment'],
+                $_POST['formTemplate'],
+                $_POST['formCollate'],
+                $_POST['formCType']
+            );
             if ($status == 0) {
                 $this->misc->setReloadBrowser(true);
                 $this->doDefault($lang['strdatabasecreated']);
             } else {
                 $this->doCreate($lang['strdatabasecreatedbad']);
             }
-
         }
     }
 
@@ -473,9 +472,9 @@ class AllDBController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Show default list of databases in the server
- */
+    /**
+     * Show default list of databases in the server
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -611,7 +610,5 @@ class AllDBController extends BaseController
             ],
         ];
         $this->printNavLinks($navlinks, $this->table_place, get_defined_vars());
-
     }
-
 }

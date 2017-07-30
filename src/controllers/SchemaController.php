@@ -20,7 +20,7 @@ class SchemaController extends BaseController
 
         if ($action == 'tree') {
             return $this->doTree();
-        } else if ($action == 'subtree') {
+        } elseif ($action == 'subtree') {
             return $this->doSubTree();
         }
 
@@ -65,15 +65,13 @@ class SchemaController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
-/**
- * Generate XML for the browser tree.
- */
+    /**
+     * Generate XML for the browser tree.
+     */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -87,14 +85,16 @@ class SchemaController extends BaseController
             'text'    => Decorator::field('nspname'),
             'icon'    => 'Schema',
             'toolTip' => Decorator::field('nspcomment'),
-            'action'  => Decorator::redirecturl('redirect.php',
+            'action'  => Decorator::redirecturl(
+                'redirect.php',
                 $reqvars,
                 [
                     'subject' => 'schema',
                     'schema'  => Decorator::field('nspname'),
                 ]
             ),
-            'branch'  => Decorator::url('schemas.php',
+            'branch'  => Decorator::url(
+                'schemas.php',
                 $reqvars,
                 [
                     'action' => 'subtree',
@@ -104,12 +104,10 @@ class SchemaController extends BaseController
         ];
 
         $this->printTree($schemas, $attrs, 'schemas');
-
     }
 
     public function doSubTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -124,11 +122,13 @@ class SchemaController extends BaseController
         $attrs = [
             'text'   => Decorator::field('title'),
             'icon'   => Decorator::field('icon'),
-            'action' => Decorator::actionurl(Decorator::field('url'),
+            'action' => Decorator::actionurl(
+                Decorator::field('url'),
                 $reqvars,
                 Decorator::field('urlvars', [])
             ),
-            'branch' => Decorator::url(Decorator::field('url'),
+            'branch' => Decorator::url(
+                Decorator::field('url'),
                 $reqvars,
                 Decorator::field('urlvars'),
                 ['action' => 'tree']
@@ -136,7 +136,6 @@ class SchemaController extends BaseController
         ];
 
         $this->printTree($items, $attrs, 'schema');
-
     }
 
     /**
@@ -325,7 +324,6 @@ class SchemaController extends BaseController
             } else {
                 $this->doCreate($lang['strschemacreatedbad']);
             }
-
         }
     }
 
@@ -335,7 +333,6 @@ class SchemaController extends BaseController
      */
     public function doAlter($msg = '')
     {
-
         $misc = $this->misc;
         $lang = $this->lang;
         $data = $misc->getDatabaseAccessor();
@@ -420,7 +417,6 @@ class SchemaController extends BaseController
         } else {
             $this->doAlter($lang['strschemaalteredbad']);
         }
-
     }
 
     /**
@@ -484,7 +480,6 @@ class SchemaController extends BaseController
                 } else {
                     $this->doDefault($lang['strschemadroppedbad']);
                 }
-
             } else {
                 $status = $data->dropSchema($_POST['nsp'], isset($_POST['cascade']));
                 if ($status == 0) {
@@ -493,7 +488,6 @@ class SchemaController extends BaseController
                 } else {
                     $this->doDefault($lang['strschemadroppedbad']);
                 }
-
             }
         }
     }

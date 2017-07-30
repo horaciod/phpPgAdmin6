@@ -31,7 +31,6 @@ class TableSpacesController extends BaseController
         $users = $data->getUsers();
 
         if ($tablespace->recordCount() > 0) {
-
             if (!isset($_POST['name'])) {
                 $_POST['name'] = $tablespace->fields['spcname'];
             }
@@ -75,7 +74,6 @@ class TableSpacesController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
     /**
@@ -103,7 +101,6 @@ class TableSpacesController extends BaseController
             } else {
                 $this->doAlter($lang['strtablespacealteredbad']);
             }
-
         }
     }
 
@@ -137,7 +134,6 @@ class TableSpacesController extends BaseController
             } else {
                 $this->doDefault($lang['strtablespacedroppedbad']);
             }
-
         }
     }
 
@@ -232,7 +228,6 @@ class TableSpacesController extends BaseController
             } else {
                 $this->doCreate($lang['strtablespacecreatedbad']);
             }
-
         }
     }
 
@@ -384,5 +379,4 @@ class TableSpacesController extends BaseController
 
         $misc->printFooter();
     }
-
 }

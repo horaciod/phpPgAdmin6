@@ -38,7 +38,6 @@ class DBExportController extends BaseController
 
         // Check that database dumps are enabled.
         if ($misc->isDumpEnabled($dumpall)) {
-
             $server_info = $misc->getServerInfo();
 
             // Get the path of the pg_dump/pg_dumpall executable
@@ -186,5 +185,4 @@ class DBExportController extends BaseController
             passthru($cmd);
         }
     }
-
 }

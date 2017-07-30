@@ -12,7 +12,6 @@ class PrivilegeController extends BaseController
 
     public function render()
     {
-
         $conf   = $this->conf;
         $misc   = $this->misc;
         $lang   = $this->lang;
@@ -175,9 +174,18 @@ class PrivilegeController extends BaseController
                 $table = null;
             }
 
-            $status = $data->setPrivileges(($mode == 'grant') ? 'GRANT' : 'REVOKE', $_REQUEST['subject'], $object,
-                isset($_REQUEST['public']), $_REQUEST['username'], $_REQUEST['groupname'], array_keys($_REQUEST['privilege']),
-                isset($_REQUEST['grantoption']), isset($_REQUEST['cascade']), $table);
+            $status = $data->setPrivileges(
+                ($mode == 'grant') ? 'GRANT' : 'REVOKE',
+                $_REQUEST['subject'],
+                $object,
+                isset($_REQUEST['public']),
+                $_REQUEST['username'],
+                $_REQUEST['groupname'],
+                array_keys($_REQUEST['privilege']),
+                isset($_REQUEST['grantoption']),
+                isset($_REQUEST['cascade']),
+                $table
+            );
 
             if ($status == 0) {
                 $this->doDefault($lang['strgranted']);
@@ -186,7 +194,6 @@ class PrivilegeController extends BaseController
             } else {
                 $this->doAlter(true, $_REQUEST['mode'], $lang['strgrantfailed']);
             }
-
         }
     }
 
@@ -195,7 +202,6 @@ class PrivilegeController extends BaseController
      */
     public function doDefault($msg = '')
     {
-
         $conf     = $this->conf;
         $misc     = $this->misc;
         $lang     = $this->lang;
@@ -336,7 +342,7 @@ class PrivilegeController extends BaseController
                 "{$subject}_oid" => $objectoid,
                 'subject'        => $subject,
             ];
-        } else if ($_REQUEST['subject'] == 'column') {
+        } elseif ($_REQUEST['subject'] == 'column') {
             $urlvars = [
                 'action'   => 'alter',
                 'server'   => $_REQUEST['server'],
@@ -351,7 +357,6 @@ class PrivilegeController extends BaseController
             } else {
                 $urlvars['view'] = $_REQUEST['view'];
             }
-
         } else {
             $urlvars = [
                 'action'   => 'alter',
@@ -406,5 +411,4 @@ class PrivilegeController extends BaseController
 
         $this->printNavLinks($navlinks, $this->table_place, get_defined_vars());
     }
-
 }

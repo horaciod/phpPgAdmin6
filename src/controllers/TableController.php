@@ -16,7 +16,6 @@ class TableController extends BaseController
 
     public function render()
     {
-
         $conf   = $this->conf;
         $misc   = $this->misc;
         $lang   = $this->lang;
@@ -24,7 +23,7 @@ class TableController extends BaseController
 
         if ($action == 'tree') {
             return $this->doTree();
-        } else if ($action == 'subtree') {
+        } elseif ($action == 'subtree') {
             return $this->doSubTree();
         }
 
@@ -106,7 +105,6 @@ class TableController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     /**
@@ -114,7 +112,6 @@ class TableController extends BaseController
      */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -129,16 +126,19 @@ class TableController extends BaseController
         $attrs = [
             'text'       => Decorator::field('relname'),
             'icon'       => 'Table',
-            'iconAction' => Decorator::url('display.php',
+            'iconAction' => Decorator::url(
+                'display.php',
                 $reqvars,
                 ['table' => Decorator::field('relname')]
             ),
             'toolTip'    => Decorator::field('relcomment'),
-            'action'     => Decorator::redirecturl('redirect.php',
+            'action'     => Decorator::redirecturl(
+                'redirect.php',
                 $reqvars,
                 ['table' => Decorator::field('relname')]
             ),
-            'branch'     => Decorator::url('tables.php',
+            'branch'     => Decorator::url(
+                'tables.php',
                 $reqvars,
                 [
                     'action' => 'subtree',
@@ -152,7 +152,6 @@ class TableController extends BaseController
 
     public function doSubTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -172,7 +171,12 @@ class TableController extends BaseController
                 ['table' => $_REQUEST['table']]
             ),
             'branch' => Decorator::ifempty(
-                Decorator::field('branch'), '', Decorator::url(Decorator::field('url'), $reqvars, [
+                Decorator::field('branch'),
+                '',
+                Decorator::url(
+                    Decorator::field('url'),
+                    $reqvars,
+                    [
                     'action' => 'tree',
                     'table'  => $_REQUEST['table'],
                 ]
@@ -395,7 +399,6 @@ class TableController extends BaseController
         $this->printNavLinks($navlinks, 'tables-tables', get_defined_vars());
 
         echo $this->view->fetch('table_list_footer.twig', ['table_class' => $this->table_place]);
-
     }
 
     /**
@@ -414,7 +417,6 @@ class TableController extends BaseController
             if ($default_with_oids == 'off') {
                 $_REQUEST['withoutoids'] = 'on';
             }
-
         }
 
         if (!isset($_REQUEST['name'])) {
@@ -638,10 +640,22 @@ class TableController extends BaseController
                     return;
                 }
 
-                $status = $data->createTable($_REQUEST['name'], $_REQUEST['fields'], $_REQUEST['field'],
-                    $_REQUEST['type'], $_REQUEST['array'], $_REQUEST['length'], $_REQUEST['notnull'], $_REQUEST['default'],
-                    isset($_REQUEST['withoutoids']), $_REQUEST['colcomment'], $_REQUEST['tblcomment'], $_REQUEST['spcname'],
-                    $_REQUEST['uniquekey'], $_REQUEST['primarykey']);
+                $status = $data->createTable(
+                    $_REQUEST['name'],
+                    $_REQUEST['fields'],
+                    $_REQUEST['field'],
+                    $_REQUEST['type'],
+                    $_REQUEST['array'],
+                    $_REQUEST['length'],
+                    $_REQUEST['notnull'],
+                    $_REQUEST['default'],
+                    isset($_REQUEST['withoutoids']),
+                    $_REQUEST['colcomment'],
+                    $_REQUEST['tblcomment'],
+                    $_REQUEST['spcname'],
+                    $_REQUEST['uniquekey'],
+                    $_REQUEST['primarykey']
+                );
 
                 if ($status == 0) {
                     $misc->setReloadBrowser(true);
@@ -705,7 +719,6 @@ class TableController extends BaseController
                 if ($_REQUEST['like'] == $tables["\"{$a['nspname']}\".\"{$a['relname']}\""]) {
                     $tblsel = htmlspecialchars($tables["\"{$a['nspname']}\".\"{$a['relname']}\""]);
                 }
-
             }
 
             unset($tbltmp);
@@ -755,7 +768,6 @@ class TableController extends BaseController
             echo "<input type=\"submit\" name=\"cancel\" value=\"{$lang['strcancel']}\" /></p>\n";
             echo "</form>\n";
         } else {
-
             if (trim($_REQUEST['name']) == '') {
                 $this->doCreateLike(false, $lang['strtableneedsname']);
                 return;
@@ -769,8 +781,14 @@ class TableController extends BaseController
                 $_REQUEST['tablespace'] = '';
             }
 
-            $status = $data->createTableLike($_REQUEST['name'], unserialize($_REQUEST['like']), isset($_REQUEST['withdefaults']),
-                isset($_REQUEST['withconstraints']), isset($_REQUEST['withindexes']), $_REQUEST['tablespace']);
+            $status = $data->createTableLike(
+                $_REQUEST['name'],
+                unserialize($_REQUEST['like']),
+                isset($_REQUEST['withdefaults']),
+                isset($_REQUEST['withconstraints']),
+                isset($_REQUEST['withindexes']),
+                $_REQUEST['tablespace']
+            );
 
             if ($status == 0) {
                 $misc->setReloadBrowser(true);
@@ -847,8 +865,11 @@ class TableController extends BaseController
                         '>', htmlspecialchars($v), "</option>\n";
                     }
                     echo "</select>\n</td>\n";
-                    echo '<td style="white-space:nowrap;">', $data->printField("values[{$attrs->fields['attname']}]",
-                        $_REQUEST['values'][$attrs->fields['attname']], $attrs->fields['type']), '</td>';
+                    echo '<td style="white-space:nowrap;">', $data->printField(
+                        "values[{$attrs->fields['attname']}]",
+                        $_REQUEST['values'][$attrs->fields['attname']],
+                        $attrs->fields['type']
+                    ), '</td>';
                     echo "</tr>\n";
                     $i++;
                     $attrs->moveNext();
@@ -894,8 +915,12 @@ class TableController extends BaseController
                 $this->doSelectRows(true, $lang['strselectneedscol']);
             } else {
                 // Generate query SQL
-                $query = $data->getSelectSQL($_REQUEST['table'], array_keys($_POST['show']),
-                    $_POST['values'], $_POST['ops']);
+                $query = $data->getSelectSQL(
+                    $_REQUEST['table'],
+                    array_keys($_POST['show']),
+                    $_POST['values'],
+                    $_POST['ops']
+                );
                 $_REQUEST['query']  = $query;
                 $_REQUEST['return'] = 'selectrows';
 
@@ -904,7 +929,6 @@ class TableController extends BaseController
                 $display_controller = new DisplayController($this->getContainer());
 
                 return $display_controller->render();
-
             }
         }
     }
@@ -932,7 +956,6 @@ class TableController extends BaseController
                 if ($fksprops !== false) {
                     echo $fksprops['code'];
                 }
-
             } else {
                 $fksprops = false;
             }
@@ -985,7 +1008,10 @@ class TableController extends BaseController
                     }
                     echo "<td id=\"row_att_{$attrs->fields['attnum']}\" style=\"white-space:nowrap;\">";
                     if (($fksprops !== false) && isset($fksprops['byfield'][$attrs->fields['attnum']])) {
-                        echo $data->printField("values[{$attrs->fields['attnum']}]", $_REQUEST['values'][$attrs->fields['attnum']], 'fktype' /*force FK*/,
+                        echo $data->printField(
+                            "values[{$attrs->fields['attnum']}]",
+                            $_REQUEST['values'][$attrs->fields['attnum']],
+                            'fktype' /*force FK*/,
                             [
                                 'id'           => "attr_{$attrs->fields['attnum']}",
                                 'autocomplete' => 'off',
@@ -1001,7 +1027,9 @@ class TableController extends BaseController
                 }
                 echo "</table>\n";
 
-                if (!isset($_SESSION['counter'])) {$_SESSION['counter'] = 0;}
+                if (!isset($_SESSION['counter'])) {
+                    $_SESSION['counter'] = 0;
+                }
 
                 echo "<input type=\"hidden\" name=\"action\" value=\"insertrow\" />\n";
                 echo '<input type="hidden" name="fields" value="', htmlentities(serialize($fields), ENT_QUOTES, 'UTF-8'), "\" />\n";
@@ -1017,7 +1045,6 @@ class TableController extends BaseController
                     } else {
                         echo "<input type=\"checkbox\" id=\"no_ac\" value=\"0\" /><label for=\"no_ac\">{$lang['strac']}</label>\n";
                     }
-
                 }
                 echo "</p>\n";
             } else {
@@ -1050,13 +1077,10 @@ class TableController extends BaseController
                 } else {
                     $this->doInsertRow(true, $lang['strrowinsertedbad']);
                 }
-
             } else {
                 $this->doInsertRow(true, $lang['strrowduplicate']);
             }
-
         }
-
     }
 
     /**
@@ -1123,7 +1147,6 @@ class TableController extends BaseController
                 } else {
                     return $this->doDefault($lang['strtableemptiedbad']);
                 }
-
             } // END not mutli empty
         } // END do Empty
     }
@@ -1146,7 +1169,6 @@ class TableController extends BaseController
         if ($confirm) {
             //If multi drop
             if (isset($_REQUEST['ma'])) {
-
                 $this->printTrail('schema');
                 $this->printTitle($lang['strdrop'], 'pg.table.drop');
 
@@ -1157,7 +1179,6 @@ class TableController extends BaseController
                     printf('<input type="hidden" name="table[]" value="%s" />', htmlspecialchars($a['table']));
                 }
             } else {
-
                 $this->printTrail('table');
                 $this->printTitle($lang['strdrop'], 'pg.table.drop');
 
@@ -1198,7 +1219,6 @@ class TableController extends BaseController
                 } else {
                     return $this->doDefault($lang['strtabledroppedbad']);
                 }
-
             } else {
                 $status = $data->dropTable($_POST['table'], isset($_POST['cascade']));
                 if ($status == 0) {
@@ -1207,11 +1227,9 @@ class TableController extends BaseController
                 } else {
                     return $this->doDefault($lang['strtabledroppedbad']);
                 }
-
             }
         } // END DROP
     }
 
     // END Function
-
 }

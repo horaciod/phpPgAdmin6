@@ -55,12 +55,10 @@ class RuleController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -148,27 +146,31 @@ class RuleController extends BaseController
             echo "<p><input type=\"submit\" name=\"ok\" value=\"{$lang['strcreate']}\" />\n";
             echo "<input type=\"submit\" name=\"cancel\" value=\"{$lang['strcancel']}\" /></p>\n";
             echo "</form>\n";
-
         } else {
             if (trim($_POST['name']) == '') {
                 $this->createRule(true, $lang['strruleneedsname']);
             } else {
-                $status = $data->createRule($_POST['name'],
-                    $_POST['event'], $_POST[$_POST['subject']], $_POST['where'],
-                    isset($_POST['instead']), $_POST['type'], $_POST['raction']);
+                $status = $data->createRule(
+                    $_POST['name'],
+                    $_POST['event'],
+                    $_POST[$_POST['subject']],
+                    $_POST['where'],
+                    isset($_POST['instead']),
+                    $_POST['type'],
+                    $_POST['raction']
+                );
                 if ($status == 0) {
                     $this->doDefault($lang['strrulecreated']);
                 } else {
                     $this->createRule(true, $lang['strrulecreatedbad']);
                 }
-
             }
         }
     }
 
-/**
- * Show confirmation of drop and perform actual drop
- */
+    /**
+     * Show confirmation of drop and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -180,8 +182,11 @@ class RuleController extends BaseController
             $this->printTrail($_REQUEST['subject']);
             $this->printTitle($lang['strdrop'], 'pg.rule.drop');
 
-            echo '<p>', sprintf($lang['strconfdroprule'], $misc->printVal($_REQUEST['rule']),
-                $misc->printVal($_REQUEST[$_REQUEST['reltype']])), "</p>\n";
+            echo '<p>', sprintf(
+                $lang['strconfdroprule'],
+                $misc->printVal($_REQUEST['rule']),
+                $misc->printVal($_REQUEST[$_REQUEST['reltype']])
+            ), "</p>\n";
 
             echo '<form action="' . SUBFOLDER . "/src/views/rules.php\" method=\"post\">\n";
             echo "<input type=\"hidden\" name=\"action\" value=\"drop\" />\n";
@@ -201,14 +206,12 @@ class RuleController extends BaseController
             } else {
                 $this->doDefault($lang['strruledroppedbad']);
             }
-
         }
-
     }
 
-/**
- * List all the rules on the table
- */
+    /**
+     * List all the rules on the table
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -276,5 +279,4 @@ class RuleController extends BaseController
             'content' => $lang['strcreaterule'],
         ]], 'rules-rules', get_defined_vars());
     }
-
 }

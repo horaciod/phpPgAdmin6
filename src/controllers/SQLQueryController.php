@@ -48,7 +48,6 @@ class SQLQueryController extends BaseController
         if (isset($_REQUEST['subject'])) {
             $this->subject = $_REQUEST['subject'];
         }
-
     }
 
     public function render()
@@ -65,7 +64,6 @@ class SQLQueryController extends BaseController
             !(isset($_FILES['script']) &&
                 $_FILES['script']['size'] > 0) &&
             (preg_match('/^\s*explain/i', $this->query) == 0)) {
-
             $display_controller = new DisplayController($this->getContainer());
 
             return $display_controller->render();
@@ -204,14 +202,13 @@ class SQLQueryController extends BaseController
                 }
                 echo "</table>\n";
                 echo '<p>', $rs->recordCount(), " {$lang['strrows']}</p>\n";
-            } else if ($data->conn->Affected_Rows() > 0) {
+            } elseif ($data->conn->Affected_Rows() > 0) {
                 // Otherwise if any rows have been affected
                 echo '<p>', $data->conn->Affected_Rows(), " {$lang['strrowsaff']}</p>\n";
             } else {
                 // Otherwise nodata to print
                 echo '<p>', $lang['strnodata'], "</p>\n";
             }
-
         }
     }
 
@@ -229,10 +226,8 @@ class SQLQueryController extends BaseController
                 return $this->execute_script();
             } else {
                 return $this->execute_query();
-
             }
         } catch (\PHPPgAdmin\ADODB_Exception $e) {
-
             $message   = $e->getMessage();
             $trace     = $e->getTraceAsString();
             $lastError = $_connection->getLastError();

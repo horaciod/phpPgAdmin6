@@ -22,8 +22,12 @@ class ConstraintController extends BaseController
             return $this->doTree();
         }
 
-        $this->printHeader($lang['strtables'] . ' - ' . $_REQUEST['table'] . ' - ' . $lang['strconstraints'],
-            '<script src="' . SUBFOLDER . '/js/indexes.js" type="text/javascript"></script>', true, 'select2_header.twig');
+        $this->printHeader(
+            $lang['strtables'] . ' - ' . $_REQUEST['table'] . ' - ' . $lang['strconstraints'],
+            '<script src="' . SUBFOLDER . '/js/indexes.js" type="text/javascript"></script>',
+            true,
+            'select2_header.twig'
+        );
 
         if ($action == 'add_unique_key' || $action == 'save_add_unique_key'
             || $action == 'add_primary_key' || $action == 'save_add_primary_key'
@@ -101,7 +105,6 @@ class ConstraintController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
     /**
@@ -266,15 +269,24 @@ class ConstraintController extends BaseController
                     || !is_array($temp) || sizeof($temp) == 0) {
                     $this->addForeignKey(2, $lang['strfkneedscols']);
                 } else {
-                    $status = $data->addForeignKey($_POST['table'], $_POST['target']['schemaname'], $_POST['target']['tablename'],
-                        unserialize($_POST['SourceColumnList']), $_POST['IndexColumnList'], $_POST['upd_action'], $_POST['del_action'],
-                        $_POST['match'], $_POST['deferrable'], $_POST['initially'], $_POST['name']);
+                    $status = $data->addForeignKey(
+                        $_POST['table'],
+                        $_POST['target']['schemaname'],
+                        $_POST['target']['tablename'],
+                        unserialize($_POST['SourceColumnList']),
+                        $_POST['IndexColumnList'],
+                        $_POST['upd_action'],
+                        $_POST['del_action'],
+                        $_POST['match'],
+                        $_POST['deferrable'],
+                        $_POST['initially'],
+                        $_POST['name']
+                    );
                     if ($status == 0) {
                         $this->doDefault($lang['strfkadded']);
                     } else {
                         $this->addForeignKey(2, $lang['strfkaddedbad']);
                     }
-
                 }
                 break;
             default:
@@ -342,12 +354,11 @@ class ConstraintController extends BaseController
                 echo "<script>jQuery('select[name=\"target\"]').select2()</script>";
                 break;
         }
-
     }
 
-/**
- * Confirm and then actually add a PRIMARY KEY or UNIQUE constraint
- */
+    /**
+     * Confirm and then actually add a PRIMARY KEY or UNIQUE constraint
+     */
     public function addPrimaryOrUniqueKey($type, $confirm, $msg = '')
     {
         $conf = $this->conf;
@@ -468,7 +479,6 @@ class ConstraintController extends BaseController
                     } else {
                         $this->addPrimaryOrUniqueKey($_POST['type'], true, $lang['strpkaddedbad']);
                     }
-
                 }
             } elseif ($_POST['type'] == 'unique') {
                 // Check that they've given at least one column
@@ -482,18 +492,16 @@ class ConstraintController extends BaseController
                     } else {
                         $this->addPrimaryOrUniqueKey($_POST['type'], true, $lang['struniqaddedbad']);
                     }
-
                 }
             } else {
                 $this->doDefault($lang['strinvalidparam']);
             }
-
         }
     }
 
-/**
- * Confirm and then actually add a CHECK constraint
- */
+    /**
+     * Confirm and then actually add a CHECK constraint
+     */
     public function addCheck($confirm, $msg = '')
     {
         $conf = $this->conf;
@@ -532,26 +540,27 @@ class ConstraintController extends BaseController
             echo "<p><input type=\"submit\" name=\"ok\" value=\"{$lang['stradd']}\" />\n";
             echo "<input type=\"submit\" name=\"cancel\" value=\"{$lang['strcancel']}\" /></p>\n";
             echo "</form>\n";
-
         } else {
             if (trim($_POST['definition']) == '') {
                 $this->addCheck(true, $lang['strcheckneedsdefinition']);
             } else {
-                $status = $data->addCheckConstraint($_POST['table'],
-                    $_POST['definition'], $_POST['name']);
+                $status = $data->addCheckConstraint(
+                    $_POST['table'],
+                    $_POST['definition'],
+                    $_POST['name']
+                );
                 if ($status == 0) {
                     $this->doDefault($lang['strcheckadded']);
                 } else {
                     $this->addCheck(true, $lang['strcheckaddedbad']);
                 }
-
             }
         }
     }
 
-/**
- * Show confirmation of drop and perform actual drop
- */
+    /**
+     * Show confirmation of drop and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -563,8 +572,11 @@ class ConstraintController extends BaseController
             $this->printTrail('constraint');
             $this->printTitle($lang['strdrop'], 'pg.constraint.drop');
 
-            echo '<p>', sprintf($lang['strconfdropconstraint'], $misc->printVal($_REQUEST['constraint']),
-                $misc->printVal($_REQUEST['table'])), "</p>\n";
+            echo '<p>', sprintf(
+                $lang['strconfdropconstraint'],
+                $misc->printVal($_REQUEST['constraint']),
+                $misc->printVal($_REQUEST['table'])
+            ), "</p>\n";
 
             echo '<form action="' . SUBFOLDER . "/src/views/constraints.php\" method=\"post\">\n";
             echo "<input type=\"hidden\" name=\"action\" value=\"drop\" />\n";
@@ -583,7 +595,6 @@ class ConstraintController extends BaseController
             } else {
                 $this->doDefault($lang['strconstraintdroppedbad']);
             }
-
         }
     }
 
@@ -598,7 +609,6 @@ class ConstraintController extends BaseController
         $data = $misc->getDatabaseAccessor();
 
         $cnPre = function (&$rowdata) use ($data) {
-
             if (is_null($rowdata->fields['consrc'])) {
                 $atts                           = $data->getAttributeNames($_REQUEST['table'], explode(' ', $rowdata->fields['indkey']));
                 $rowdata->fields['+definition'] = ($rowdata->fields['contype'] == 'u' ? 'UNIQUE (' : 'PRIMARY KEY (') . join(',', $atts) . ')';

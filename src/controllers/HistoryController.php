@@ -51,7 +51,6 @@ class HistoryController extends BaseController
         // Set the name of the window
         $this->setWindowName('history');
         return $misc->printFooter();
-
     }
 
     public function doDefault()
@@ -78,7 +77,6 @@ class HistoryController extends BaseController
         }
 
         if (isset($_SESSION['history'][$_REQUEST['server']][$_REQUEST['database']])) {
-
             $history = new \PHPPgAdmin\ArrayRecordSet($_SESSION['history'][$_REQUEST['server']][$_REQUEST['database']]);
 
             //Kint::dump($history);
@@ -208,7 +206,6 @@ class HistoryController extends BaseController
         } else {
             unset($_SESSION['history'][$_REQUEST['server']][$_REQUEST['database']][$qid]);
         }
-
     }
 
     public function doClearHistory($confirm)
@@ -236,7 +233,6 @@ class HistoryController extends BaseController
         } else {
             unset($_SESSION['history'][$_REQUEST['server']][$_REQUEST['database']]);
         }
-
     }
 
     public function doDownloadHistory()
@@ -257,5 +253,4 @@ class HistoryController extends BaseController
 
         exit;
     }
-
 }

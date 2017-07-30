@@ -13,7 +13,6 @@ class UserController extends BaseController
 
     public function render()
     {
-
         $this->printHeader($lang['strusers']);
         $this->printBody();
 
@@ -71,15 +70,14 @@ class UserController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
-/**
- * If a user is not a superuser, then we have an 'account management' page
- * where they can change their password, etc.  We don't prevent them from
- * messing with the URL to gain access to other user admin stuff, because
- * the PostgreSQL permissions will prevent them changing anything anyway.
- */
+    /**
+     * If a user is not a superuser, then we have an 'account management' page
+     * where they can change their password, etc.  We don't prevent them from
+     * messing with the URL to gain access to other user admin stuff, because
+     * the PostgreSQL permissions will prevent them changing anything anyway.
+     */
     public function doAccount($msg = '')
     {
         $conf = $this->conf;
@@ -127,9 +125,9 @@ class UserController extends BaseController
         ]], 'users-account', get_defined_vars());
     }
 
-/**
- * Show confirmation of change password and actually change password
- */
+    /**
+     * Show confirmation of change password and actually change password
+     */
     public function doChangePassword($confirm, $msg = '')
     {
         $conf = $this->conf;
@@ -176,21 +174,22 @@ class UserController extends BaseController
             elseif ($_POST['password'] != $_POST['confirm']) {
                 $this->doChangePassword(true, $lang['strpasswordconfirm']);
             } else {
-                $status = $data->changePassword($server_info['username'],
-                    $_POST['password']);
+                $status = $data->changePassword(
+                    $server_info['username'],
+                    $_POST['password']
+                );
                 if ($status == 0) {
                     $this->doAccount($lang['strpasswordchanged']);
                 } else {
                     $this->doAccount($lang['strpasswordchangedbad']);
                 }
-
             }
         }
     }
 
-/**
- * Function to allow editing of a user
- */
+    /**
+     * Function to allow editing of a user
+     */
     public function doEdit($msg = '')
     {
         $conf = $this->conf;
@@ -253,12 +252,11 @@ class UserController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
-/**
- * Function to save after editing a user
- */
+    /**
+     * Function to save after editing a user
+     */
     public function doSaveEdit()
     {
         $conf = $this->conf;
@@ -269,7 +267,7 @@ class UserController extends BaseController
         // Check name and password
         if (isset($_POST['newname']) && $_POST['newname'] == '') {
             $this->doEdit($lang['struserneedsname']);
-        } else if ($_POST['formPassword'] != $_POST['formConfirm']) {
+        } elseif ($_POST['formPassword'] != $_POST['formConfirm']) {
             $this->doEdit($lang['strpasswordconfirm']);
         } else {
             if (isset($_POST['newname'])) {
@@ -283,13 +281,12 @@ class UserController extends BaseController
             } else {
                 $this->doEdit($lang['struserupdatedbad']);
             }
-
         }
     }
 
-/**
- * Show confirmation of drop and perform actual drop
- */
+    /**
+     * Show confirmation of drop and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -317,13 +314,12 @@ class UserController extends BaseController
             } else {
                 $this->doDefault($lang['struserdroppedbad']);
             }
-
         }
     }
 
-/**
- * Displays a screen where they can enter a new user
- */
+    /**
+     * Displays a screen where they can enter a new user
+     */
     public function doCreate($msg = '')
     {
         $conf = $this->conf;
@@ -375,9 +371,9 @@ class UserController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Actually creates the new user in the database
- */
+    /**
+     * Actually creates the new user in the database
+     */
     public function doSaveCreate()
     {
         $conf = $this->conf;
@@ -388,23 +384,28 @@ class UserController extends BaseController
         // Check data
         if ($_POST['formUsername'] == '') {
             $this->doCreate($lang['struserneedsname']);
-        } else if ($_POST['formPassword'] != $_POST['formConfirm']) {
+        } elseif ($_POST['formPassword'] != $_POST['formConfirm']) {
             $this->doCreate($lang['strpasswordconfirm']);
         } else {
-            $status = $data->createUser($_POST['formUsername'], $_POST['formPassword'],
-                isset($_POST['formCreateDB']), isset($_POST['formSuper']), $_POST['formExpires'], []);
+            $status = $data->createUser(
+                $_POST['formUsername'],
+                $_POST['formPassword'],
+                isset($_POST['formCreateDB']),
+                isset($_POST['formSuper']),
+                $_POST['formExpires'],
+                []
+            );
             if ($status == 0) {
                 $this->doDefault($lang['strusercreated']);
             } else {
                 $this->doCreate($lang['strusercreatedbad']);
             }
-
         }
     }
 
-/**
- * Show default list of users in the database
- */
+    /**
+     * Show default list of users in the database
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -493,7 +494,5 @@ class UserController extends BaseController
             ],
             'content' => $lang['strcreateuser'],
         ]], 'users-users', get_defined_vars());
-
     }
-
 }

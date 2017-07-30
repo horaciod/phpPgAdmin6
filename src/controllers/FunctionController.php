@@ -70,7 +70,6 @@ class FunctionController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
     /**
@@ -78,7 +77,6 @@ class FunctionController extends BaseController
      */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -94,7 +92,8 @@ class FunctionController extends BaseController
             'text'    => $proto,
             'icon'    => 'Function',
             'toolTip' => Decorator::field('procomment'),
-            'action'  => Decorator::redirecturl('redirect.php',
+            'action'  => Decorator::redirecturl(
+                'redirect.php',
                 $reqvars,
                 [
                     'action'       => 'properties',
@@ -112,7 +111,6 @@ class FunctionController extends BaseController
      */
     public function doSaveEdit()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -122,7 +120,7 @@ class FunctionController extends BaseController
 
         if ($fnlang == 'c') {
             $def = [$_POST['formObjectFile'], $_POST['formLinkSymbol']];
-        } else if ($fnlang == 'internal') {
+        } elseif ($fnlang == 'internal') {
             $def = $_POST['formLinkSymbol'];
         } else {
             $def = $_POST['formDefinition'];
@@ -131,12 +129,24 @@ class FunctionController extends BaseController
             $_POST['formFuncSchema'] = '';
         }
 
-        $status = $data->setFunction($_POST['function_oid'], $_POST['original_function'], $_POST['formFunction'],
-            $_POST['original_arguments'], $_POST['original_returns'], $def,
-            $_POST['original_lang'], $_POST['formProperties'], isset($_POST['original_setof']),
-            $_POST['original_owner'], $_POST['formFuncOwn'], $_POST['original_schema'],
-            $_POST['formFuncSchema'], isset($_POST['formCost']) ? $_POST['formCost'] : null,
-            isset($_POST['formRows']) ? $_POST['formRows'] : 0, $_POST['formComment']);
+        $status = $data->setFunction(
+            $_POST['function_oid'],
+            $_POST['original_function'],
+            $_POST['formFunction'],
+            $_POST['original_arguments'],
+            $_POST['original_returns'],
+            $def,
+            $_POST['original_lang'],
+            $_POST['formProperties'],
+            isset($_POST['original_setof']),
+            $_POST['original_owner'],
+            $_POST['formFuncOwn'],
+            $_POST['original_schema'],
+            $_POST['formFuncSchema'],
+            isset($_POST['formCost']) ? $_POST['formCost'] : null,
+            isset($_POST['formRows']) ? $_POST['formRows'] : 0,
+            $_POST['formComment']
+        );
 
         if ($status == 0) {
             // If function has had schema altered, need to change to the new schema
@@ -213,7 +223,6 @@ class FunctionController extends BaseController
                 if (!isset($_POST['formRows'])) {
                     $_POST['formRows'] = $fndata->fields['prorows'];
                 }
-
             }
 
             // Deal with named parameters
@@ -320,7 +329,7 @@ class FunctionController extends BaseController
                 htmlspecialchars($_POST['formObjectFile']), "\" /></td>\n";
                 echo '<td class="data1" colspan="2"><input type="text" name="formLinkSymbol" style="width:100%" value="',
                 htmlspecialchars($_POST['formLinkSymbol']), "\" /></td></tr>\n";
-            } else if ($fnlang == 'internal') {
+            } elseif ($fnlang == 'internal') {
                 echo "<tr><th class=\"data\" colspan=\"5\">{$lang['strlinksymbol']}</th></tr>\n";
                 echo '<tr><td class="data1" colspan="5"><input type="text" name="formLinkSymbol" style="width:100%" value="',
                 htmlspecialchars($_POST['formLinkSymbol']), "\" /></td></tr>\n";
@@ -387,7 +396,6 @@ class FunctionController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
     /**
@@ -481,7 +489,7 @@ class FunctionController extends BaseController
                 echo "<th class=\"data\" colspan=\"2\">{$lang['strlinksymbol']}</th></tr>\n";
                 echo '<tr><td class="data1" colspan="2">', $misc->printVal($funcdata->fields['probin']), "</td>\n";
                 echo '<td class="data1" colspan="2">', $misc->printVal($funcdata->fields['prosrc']), "</td></tr>\n";
-            } else if ($fnlang == 'internal') {
+            } elseif ($fnlang == 'internal') {
                 echo "<tr><th class=\"data\" colspan=\"4\">{$lang['strlinksymbol']}</th></tr>\n";
                 echo '<tr><td class="data1" colspan="4">', $misc->printVal($funcdata->fields['prosrc']), "</td></tr>\n";
             } else {
@@ -490,7 +498,6 @@ class FunctionController extends BaseController
                 echo "<tr><th class=\"data\" colspan=\"4\">{$lang['strdefinition']}</th></tr>\n";
                 // Check to see if we have syntax highlighting for this language
                 if (array_key_exists($fnlang, $data->langmap)) {
-
                     $temp = $highlight->syntax_highlight(htmlspecialchars($funcdata->fields['prosrc']), $data->langmap[$fnlang]);
                     $tag  = 'prenoescape';
                 } else {
@@ -642,7 +649,6 @@ class FunctionController extends BaseController
                 } else {
                     $this->doDefault($lang['strfunctiondroppedbad']);
                 }
-
             } else {
                 $status = $data->dropFunction($_POST['function_oid'], isset($_POST['cascade']));
                 if ($status == 0) {
@@ -653,7 +659,6 @@ class FunctionController extends BaseController
                 }
             }
         }
-
     }
 
     /**
@@ -759,7 +764,7 @@ class FunctionController extends BaseController
         $szNotSetOfSelected = '';
         if ($_POST['formSetOf'] == '') {
             $szNotSetOfSelected = ' selected="selected"';
-        } else if ($_POST['formSetOf'] == 'SETOF') {
+        } elseif ($_POST['formSetOf'] == 'SETOF') {
             $szSetOfSelected = ' selected="selected"';
         }
         $szReturns = '<td class="data1" colspan="2">';
@@ -776,7 +781,7 @@ class FunctionController extends BaseController
         $szNotArraySelected = '';
         if ($_POST['formArray'] == '') {
             $szNotArraySelected = ' selected="selected"';
-        } else if ($_POST['formArray'] == '[]') {
+        } elseif ($_POST['formArray'] == '[]') {
             $szArraySelected = ' selected="selected"';
         }
 
@@ -873,7 +878,7 @@ class FunctionController extends BaseController
             htmlspecialchars($_POST['formObjectFile']), "\" /></td>\n";
             echo '<td class="data1" colspan="2"><input type="text" name="formLinkSymbol" style="width:100%" value="',
             htmlspecialchars($_POST['formLinkSymbol']), "\" /></td></tr>\n";
-        } else if ($fnlang == 'internal') {
+        } elseif ($fnlang == 'internal') {
             echo "<tr><th class=\"data\" colspan=\"4\">{$lang['strlinksymbol']}</th></tr>\n";
             echo '<tr><td class="data1" colspan="4"><input type="text" name="formLinkSymbol" style="width:100%" value="',
             htmlspecialchars($_POST['formLinkSymbol']), "\" /></td></tr>\n";
@@ -938,7 +943,7 @@ class FunctionController extends BaseController
 
         if ($fnlang == 'c') {
             $def = [$_POST['formObjectFile'], $_POST['formLinkSymbol']];
-        } else if ($fnlang == 'internal') {
+        } elseif ($fnlang == 'internal') {
             $def = $_POST['formLinkSymbol'];
         } else {
             $def = $_POST['formDefinition'];
@@ -971,10 +976,19 @@ class FunctionController extends BaseController
             $this->doCreate($lang['strfunctionneedsdef'], $szJS);
         } else {
             // Append array symbol to type if chosen
-            $status = $data->createFunction($_POST['formFunction'], empty($_POST['nojs']) ? buildFunctionArguments($_POST) : $_POST['formArguments'],
-                $_POST['formReturns'] . $_POST['formArray'], $def, $_POST['formLanguage'],
-                $_POST['formProperties'], $_POST['formSetOf'] == 'SETOF',
-                $cost, $rows, $_POST['formComment'], false);
+            $status = $data->createFunction(
+                $_POST['formFunction'],
+                empty($_POST['nojs']) ? buildFunctionArguments($_POST) : $_POST['formArguments'],
+                $_POST['formReturns'] . $_POST['formArray'],
+                $def,
+                $_POST['formLanguage'],
+                $_POST['formProperties'],
+                $_POST['formSetOf'] == 'SETOF',
+                $cost,
+                $rows,
+                $_POST['formComment'],
+                false
+            );
             if ($status == 0) {
                 $this->doDefault($lang['strfunctioncreated']);
             } else {
@@ -983,9 +997,9 @@ class FunctionController extends BaseController
         }
     }
 
-/**
- * Build out the function arguments string
- */
+    /**
+     * Build out the function arguments string
+     */
     public function buildFunctionArguments($arrayVars)
     {
         if (isset($_POST['formArgName'])) {
@@ -998,9 +1012,9 @@ class FunctionController extends BaseController
         return '';
     }
 
-/**
- * Build out JS to re-create table rows for arguments
- */
+    /**
+     * Build out JS to re-create table rows for arguments
+     */
     public function buildJSRows($szArgs)
     {
         $arrayModes      = ['IN', 'OUT', 'INOUT'];
@@ -1200,5 +1214,4 @@ class FunctionController extends BaseController
 
         echo $this->view->fetch('table_list_footer.twig', ['table_class' => $this->table_place]);
     }
-
 }

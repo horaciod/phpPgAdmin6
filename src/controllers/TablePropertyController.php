@@ -76,12 +76,10 @@ class TablePropertyController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -92,7 +90,8 @@ class TablePropertyController extends BaseController
 
         $attrs = [
             'text'       => Decorator::field('attname'),
-            'action'     => Decorator::actionurl('colproperties.php',
+            'action'     => Decorator::actionurl(
+                'colproperties.php',
                 $reqvars,
                 [
                     'table'  => $_REQUEST['table'],
@@ -100,7 +99,8 @@ class TablePropertyController extends BaseController
                 ]
             ),
             'icon'       => 'Column',
-            'iconAction' => Decorator::url('display.php',
+            'iconAction' => Decorator::url(
+                'display.php',
                 $reqvars,
                 [
                     'table'  => $_REQUEST['table'],
@@ -161,12 +161,11 @@ class TablePropertyController extends BaseController
         } else {
             $this->doAlter($lang['strtablealteredbad']);
         }
-
     }
 
-/**
- * Function to allow altering of a table
- */
+    /**
+     * Function to allow altering of a table
+     */
     public function doAlter($msg = '')
     {
         $conf = $this->conf;
@@ -188,7 +187,6 @@ class TablePropertyController extends BaseController
         }
 
         if ($table->recordCount() > 0) {
-
             if (!isset($_POST['name'])) {
                 $_POST['name'] = $table->fields['relname'];
             }
@@ -272,7 +270,6 @@ class TablePropertyController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
     public function doExport($msg = '')
@@ -380,12 +377,11 @@ class TablePropertyController extends BaseController
         } else {
             echo "<p>{$lang['strnouploads']}</p>\n";
         }
-
     }
 
-/**
- * Displays a screen where they can add a column
- */
+    /**
+     * Displays a screen where they can add a column
+     */
     public function doAddColumn($msg = '')
     {
         $conf = $this->conf;
@@ -512,9 +508,16 @@ class TablePropertyController extends BaseController
                     $_POST['length'] = '';
                 }
 
-                $status = $data->addColumn($_POST['table'], $_POST['field'],
-                    $_POST['type'], $_POST['array'] != '', $_POST['length'], isset($_POST['notnull']),
-                    $_POST['default'], $_POST['comment']);
+                $status = $data->addColumn(
+                    $_POST['table'],
+                    $_POST['field'],
+                    $_POST['type'],
+                    $_POST['array'] != '',
+                    $_POST['length'],
+                    isset($_POST['notnull']),
+                    $_POST['default'],
+                    $_POST['comment']
+                );
                 if ($status == 0) {
                     $misc->setReloadBrowser(true);
                     $this->doDefault($lang['strcolumnadded']);
@@ -529,9 +532,9 @@ class TablePropertyController extends BaseController
         }
     }
 
-/**
- * Show confirmation of drop column and perform actual drop
- */
+    /**
+     * Show confirmation of drop column and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -543,8 +546,11 @@ class TablePropertyController extends BaseController
             $this->printTrail('column');
             $this->printTitle($lang['strdrop'], 'pg.column.drop');
 
-            echo '<p>', sprintf($lang['strconfdropcolumn'], $misc->printVal($_REQUEST['column']),
-                $misc->printVal($_REQUEST['table'])), "</p>\n";
+            echo '<p>', sprintf(
+                $lang['strconfdropcolumn'],
+                $misc->printVal($_REQUEST['column']),
+                $misc->printVal($_REQUEST['table'])
+            ), "</p>\n";
 
             echo '<form action="' . SUBFOLDER . "/src/views/tblproperties.php\" method=\"post\">\n";
             echo "<input type=\"hidden\" name=\"action\" value=\"drop\" />\n";
@@ -563,9 +569,7 @@ class TablePropertyController extends BaseController
             } else {
                 $this->doDefault($lang['strcolumndroppedbad']);
             }
-
         }
-
     }
 
     /**
@@ -579,7 +583,6 @@ class TablePropertyController extends BaseController
         $data = $misc->getDatabaseAccessor();
 
         $attPre = function (&$rowdata, $actions) use ($data) {
-
             $rowdata->fields['+type'] = $data->formatType($rowdata->fields['type'], $rowdata->fields['atttypmod']);
             $attname                  = $rowdata->fields['attname'];
             $table                    = $_REQUEST['table'];
@@ -593,10 +596,8 @@ class TablePropertyController extends BaseController
         };
 
         $cstrRender = function ($s, $p) use ($misc, $data) {
-
             $str = '';
             foreach ($p['keys'] as $k => $c) {
-
                 if (is_null($p['keys'][$k]['consrc'])) {
                     $atts        = $data->getAttributeNames($_REQUEST['table'], explode(' ', $p['keys'][$k]['indkey']));
                     $c['consrc'] = ($c['contype'] == 'u' ? 'UNIQUE (' : 'PRIMARY KEY (') . join(',', $atts) . ')';
@@ -621,7 +622,6 @@ class TablePropertyController extends BaseController
                             $misc->icon('CheckConstraint') . '" alt="[check]" title="' . htmlentities($c['consrc'], ENT_QUOTES, 'UTF-8') . '" /></a>';
                     }
                 }
-
             }
 
             return $str;
@@ -875,7 +875,5 @@ class TablePropertyController extends BaseController
             ],
         ];
         $this->printNavLinks($navlinks, 'tblproperties-tblproperties', get_defined_vars());
-
     }
-
 }

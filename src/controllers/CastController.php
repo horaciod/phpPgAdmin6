@@ -11,9 +11,9 @@ class CastController extends BaseController
 {
     public $_name = 'CastController';
 
-/**
- * Show default list of casts in the database
- */
+    /**
+     * Show default list of casts in the database
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -22,7 +22,6 @@ class CastController extends BaseController
         $data = $misc->getDatabaseAccessor();
 
         $renderCastContext = function ($val) use ($lang) {
-
             switch ($val) {
                 case 'e':return $lang['strno'];
                 case 'a':return $lang['strinassignment'];
@@ -89,15 +88,13 @@ class CastController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
-/**
- * Generate XML for the browser tree.
- */
+    /**
+     * Generate XML for the browser tree.
+     */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -113,7 +110,5 @@ class CastController extends BaseController
         ];
 
         return $this->printTree($casts, $attrs, 'casts');
-
     }
-
 }

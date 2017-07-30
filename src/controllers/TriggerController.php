@@ -87,12 +87,10 @@ class TriggerController extends BaseController
         }
 
         return $misc->printFooter();
-
     }
 
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -108,7 +106,6 @@ class TriggerController extends BaseController
         ];
 
         return $this->printTree($triggers, $attrs, 'triggers');
-
     }
 
     /**
@@ -127,12 +124,11 @@ class TriggerController extends BaseController
         } else {
             $this->doAlter($lang['strtriggeralteredbad']);
         }
-
     }
 
-/**
- * Function to allow altering of a trigger
- */
+    /**
+     * Function to allow altering of a trigger
+     */
     public function doAlter($msg = '')
     {
         $conf = $this->conf;
@@ -147,7 +143,6 @@ class TriggerController extends BaseController
         $triggerdata = $data->getTrigger($_REQUEST['table'], $_REQUEST['trigger']);
 
         if ($triggerdata->recordCount() > 0) {
-
             if (!isset($_POST['name'])) {
                 $_POST['name'] = $triggerdata->fields['tgname'];
             }
@@ -169,12 +164,11 @@ class TriggerController extends BaseController
         } else {
             echo "<p>{$lang['strnodata']}</p>\n";
         }
-
     }
 
-/**
- * Show confirmation of drop and perform actual drop
- */
+    /**
+     * Show confirmation of drop and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -186,8 +180,11 @@ class TriggerController extends BaseController
             $this->printTrail('trigger');
             $this->printTitle($lang['strdrop'], 'pg.trigger.drop');
 
-            echo '<p>', sprintf($lang['strconfdroptrigger'], $misc->printVal($_REQUEST['trigger']),
-                $misc->printVal($_REQUEST['table'])), "</p>\n";
+            echo '<p>', sprintf(
+                $lang['strconfdroptrigger'],
+                $misc->printVal($_REQUEST['trigger']),
+                $misc->printVal($_REQUEST['table'])
+            ), "</p>\n";
 
             echo '<form action="' . SUBFOLDER . "/src/views/triggers.php\" method=\"post\">\n";
             echo "<input type=\"hidden\" name=\"action\" value=\"drop\" />\n";
@@ -205,14 +202,12 @@ class TriggerController extends BaseController
             } else {
                 $this->doDefault($lang['strtriggerdroppedbad']);
             }
-
         }
-
     }
 
-/**
- * Show confirmation of enable trigger and perform enabling the trigger
- */
+    /**
+     * Show confirmation of enable trigger and perform enabling the trigger
+     */
     public function doEnable($confirm)
     {
         $conf = $this->conf;
@@ -224,8 +219,11 @@ class TriggerController extends BaseController
             $this->printTrail('trigger');
             $this->printTitle($lang['strenable'], 'pg.table.alter');
 
-            echo '<p>', sprintf($lang['strconfenabletrigger'], $misc->printVal($_REQUEST['trigger']),
-                $misc->printVal($_REQUEST['table'])), "</p>\n";
+            echo '<p>', sprintf(
+                $lang['strconfenabletrigger'],
+                $misc->printVal($_REQUEST['trigger']),
+                $misc->printVal($_REQUEST['table'])
+            ), "</p>\n";
 
             echo '<form action="' . SUBFOLDER . "/src/views/triggers.php\" method=\"post\">\n";
             echo "<input type=\"hidden\" name=\"action\" value=\"enable\" />\n";
@@ -242,14 +240,12 @@ class TriggerController extends BaseController
             } else {
                 $this->doDefault($lang['strtriggerenabledbad']);
             }
-
         }
-
     }
 
-/**
- * Show confirmation of disable trigger and perform disabling the trigger
- */
+    /**
+     * Show confirmation of disable trigger and perform disabling the trigger
+     */
     public function doDisable($confirm)
     {
         $conf = $this->conf;
@@ -261,8 +257,11 @@ class TriggerController extends BaseController
             $this->printTrail('trigger');
             $this->printTitle($lang['strdisable'], 'pg.table.alter');
 
-            echo '<p>', sprintf($lang['strconfdisabletrigger'], $misc->printVal($_REQUEST['trigger']),
-                $misc->printVal($_REQUEST['table'])), "</p>\n";
+            echo '<p>', sprintf(
+                $lang['strconfdisabletrigger'],
+                $misc->printVal($_REQUEST['trigger']),
+                $misc->printVal($_REQUEST['table'])
+            ), "</p>\n";
 
             echo '<form action="' . SUBFOLDER . "/src/views/triggers.php\" method=\"post\">\n";
             echo "<input type=\"hidden\" name=\"action\" value=\"disable\" />\n";
@@ -279,14 +278,12 @@ class TriggerController extends BaseController
             } else {
                 $this->doDefault($lang['strtriggerdisabledbad']);
             }
-
         }
-
     }
 
-/**
- * Let them create s.th.
- */
+    /**
+     * Let them create s.th.
+     */
     public function doCreate($msg = '')
     {
         $conf = $this->conf;
@@ -355,9 +352,9 @@ class TriggerController extends BaseController
         echo "</form>\n";
     }
 
-/**
- * Actually creates the new trigger in the database
- */
+    /**
+     * Actually creates the new trigger in the database
+     */
     public function doSaveCreate()
     {
         $conf = $this->conf;
@@ -374,21 +371,26 @@ class TriggerController extends BaseController
         } elseif ($_POST['formEvent'] == '') {
             $this->doCreate();
         } else {
-            $status = $data->createTrigger($_POST['formTriggerName'], $_POST['table'],
-                $_POST['formFunction'], $_POST['formExecTime'], $_POST['formEvent'],
-                $_POST['formFrequency'], $_POST['formTriggerArgs']);
+            $status = $data->createTrigger(
+                $_POST['formTriggerName'],
+                $_POST['table'],
+                $_POST['formFunction'],
+                $_POST['formExecTime'],
+                $_POST['formEvent'],
+                $_POST['formFrequency'],
+                $_POST['formTriggerArgs']
+            );
             if ($status == 0) {
                 $this->doDefault($lang['strtriggercreated']);
             } else {
                 $this->doCreate($lang['strtriggercreatedbad']);
             }
-
         }
     }
 
-/**
- * List all the triggers on the table
- */
+    /**
+     * List all the triggers on the table
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;

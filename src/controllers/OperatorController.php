@@ -57,7 +57,6 @@ class OperatorController extends BaseController
         }
 
         $misc->printFooter();
-
     }
 
     /**
@@ -65,7 +64,6 @@ class OperatorController extends BaseController
      */
     public function doTree()
     {
-
         $conf = $this->conf;
         $misc = $this->misc;
         $lang = $this->lang;
@@ -82,7 +80,8 @@ class OperatorController extends BaseController
             'text'    => $proto,
             'icon'    => 'Operator',
             'toolTip' => Decorator::field('oprcomment'),
-            'action'  => Decorator::actionurl('operators.php',
+            'action'  => Decorator::actionurl(
+                'operators.php',
                 $reqvars,
                 [
                     'action'       => 'properties',
@@ -149,7 +148,8 @@ class OperatorController extends BaseController
             }
             echo "</table>\n";
 
-            $this->printNavLinks([
+            $this->printNavLinks(
+                [
                 'showall' => [
                     'attr'    => [
                         'href' => [
@@ -162,17 +162,18 @@ class OperatorController extends BaseController
                         ],
                     ],
                     'content' => $lang['strshowalloperators'],
-                ]], 'operators-properties', get_defined_vars()
+                ]],
+                'operators-properties',
+                get_defined_vars()
             );
         } else {
             $this->doDefault($lang['strinvalidparam']);
         }
-
     }
 
-/**
- * Show confirmation of drop and perform actual drop
- */
+    /**
+     * Show confirmation of drop and perform actual drop
+     */
     public function doDrop($confirm)
     {
         $conf = $this->conf;
@@ -202,14 +203,12 @@ class OperatorController extends BaseController
             } else {
                 $this->doDefault($lang['stroperatordroppedbad']);
             }
-
         }
-
     }
 
-/**
- * Show default list of operators in the database
- */
+    /**
+     * Show default list of operators in the database
+     */
     public function doDefault($msg = '')
     {
         $conf = $this->conf;
@@ -272,7 +271,6 @@ class OperatorController extends BaseController
 
         echo $this->printTable($operators, $columns, $actions, 'operators-operators', $lang['strnooperators']);
 
-//        TODO operators.php action=create $lang['strcreateoperator']
+        //        TODO operators.php action=create $lang['strcreateoperator']
     }
-
 }

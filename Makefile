@@ -35,4 +35,4 @@ lint:
 	./vendor/bin/phpcs -p -v --colors --no-cache --standard=PSR2 src/**/*.php
 
 csfixer:
-	./vendor/bin/php-cs-fixer --dry-run fix ./src --rules=@PSR2
+	./vendor/bin/php-cs-fixer  fix ./src --rules=@PSR2
